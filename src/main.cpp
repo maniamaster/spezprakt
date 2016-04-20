@@ -2,9 +2,9 @@
 
 int main()
 {
-Basis testBasis(10);
+    Basis testBasis(10);
 
-testBasis.print_system_size();
+    testBasis.print_system_size();
 
-return 0;
+    return 0;
 }
