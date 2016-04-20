@@ -1,7 +1,9 @@
 #ifndef BASIS_H
 #define BASIS_H
 
+extern "C"{
 #include <utilities.h>
+}
 #include <iostream>
 #include <vector>
 
@@ -12,13 +14,13 @@ class Basis
 private: 
 	int _N;
 	int _dim;
-    float _m; //total magnetization
+    int _m; //2x the total magnetization
     vector<REP_TYPE> _list; //list of basis states with dimension _dim
 
-    void generate_basis_list();
 public:
  	Basis(int N, int m);
 	void print_system_size();
+    void generate_basis_list();
 };
 
 
