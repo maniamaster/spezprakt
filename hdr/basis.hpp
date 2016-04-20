@@ -21,6 +21,7 @@ public:
  	Basis(int N, int m);
 	void print_system_size();
     void generate_basis_list();
+    void print_basis_list();
 };
 
 

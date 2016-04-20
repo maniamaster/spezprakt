@@ -24,5 +24,14 @@ void Basis::generate_basis_list()
     }
     _dim=a;
     _list=basisList;
-            
+}
+
+//hier weiterarbeiten************************************
+void Basis::print_basis_list(){
+
+    cout << _list[0] <<endl;
+    
+    //for (int i=1;i<=_dim;i++)
+     //   cout << _list[i] <<endl;
+         //print_bits(list[i], _N);
 }
