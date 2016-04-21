@@ -10,7 +10,7 @@ SRCDIR=./src/
 HDRDIR=./hdr/
 OBJDIR=./bin/obj/
 
-CPPSRC= basis.cpp
+CPPSRC= basis.cpp hamiltonian.cpp
 CPPHDR= $(CPPSRC:.cpp=.hpp)
 CPPOBJ= $(addprefix $(OBJDIR), $(CPPSRC:.cpp=.cpp.o))
 
@@ -18,7 +18,7 @@ CSRC= utilities.c# sparse_matrix.c
 COBJ= $(addprefix $(OBJDIR), $(CSRC:.c=.c.o))
 
 #IFLAGS+= -I/usr/include/lapacke/ -I/usr/include/ -I/usr/scratch1/mschmitt/boost-numeric-bindings/
-IFLAGS+= -I/usr/include/ -I./hdr/# -I/usr/scratch1/mschmitt/armadillo-6.400.3/include/ 
+IFLAGS+= -I/usr/include/ -I./hdr/ -I/usr/scratch1/mschmitt/armadillo-6.400.3/include/ 
 OPTFLAGS= -O3 #-march=native -ffast-math -funroll-loops
 
 default: $(CPPOBJ) $(COBJ)

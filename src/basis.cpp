@@ -4,6 +4,7 @@ Basis::Basis(int N,int m)
 {
 	_N=N;
     _m=m;
+    _dim=0;
 }  
 
 void Basis::print_system_size()
@@ -17,7 +18,7 @@ void Basis::generate_basis_list()
     int a=0; //initialization, position of basis vector in list
     vector<REP_TYPE> basisList;
     for (REP_TYPE s=0;s<=max;s++){
-        if (count_set_bits(s,_N) == (int(_m+_N))){
+        if (2*count_set_bits(s,_N) == (int(_m+_N))){
             a+=1;
             basisList.push_back (s);
         }
@@ -26,12 +27,13 @@ void Basis::generate_basis_list()
     _list=basisList;
 }
 
-//hier weiterarbeiten************************************
 void Basis::print_basis_list(){
+    for (int i=0;i<_dim;i++){
+        print_bits(_list[i], _N);
+    }
+}
 
-    cout << _list[0] <<endl;
-    
-    //for (int i=1;i<=_dim;i++)
-     //   cout << _list[i] <<endl;
-         //print_bits(list[i], _N);
+void Basis::print_basis_dimension(){
+    if (_dim!=0)
+        cout <<"Basis Dimension is: "<< _dim << endl;
 }

@@ -1,11 +1,13 @@
 #include <basis.hpp>
+#include <hamiltonian.hpp>
 
 int main()
 {
-    Basis testBasis(3,0);
+    Hamiltonian testHam(4,0);
 
-    testBasis.print_system_size();
-    testBasis.generate_basis_list();
-    testBasis.print_basis_list();
+    testHam.print_system_size();
+    testHam.print_basis_list();
+    testHam.print_basis_dimension();
+
     return 0;
 }

@@ -9,9 +9,10 @@ extern "C"{
 
 using namespace std;
 
+class Hamiltonian;
 class Basis
 {
-private: 
+protected: 
 	int _N;
 	int _dim;
     int _m; //2x the total magnetization
@@ -19,9 +20,11 @@ private:
 
 public:
  	Basis(int N, int m);
+ 	Basis(){};
 	void print_system_size();
     void generate_basis_list();
     void print_basis_list();
+    void print_basis_dimension();
 };
 
 
