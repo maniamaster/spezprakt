@@ -5,15 +5,17 @@
 #include <iostream>
 
 using namespace std;
+using namespace arma;
 
 class Hamiltonian: public Basis{
     private:
-        arma::mat _ham;
+        mat _ham;
+        bool _set;
         void fill();
-        
 
     public:
         Hamiltonian(int N,int m);
+        void set_ham();
         void diagonalize();
         void print_matrix();
 

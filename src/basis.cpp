@@ -40,6 +40,8 @@ REP_TYPE Basis::get_state(int i){
 void Basis::print_basis_dimension(){
     if (_dim!=0)
         cout <<"Basis Dimension is: "<< _dim << endl;
+    else
+        cout <<"no basis has been generated.";
 }
 
 int Basis::get_dim(){
@@ -59,7 +61,7 @@ int Basis::find_state(REP_TYPE s){ //finds position € [1,_dim] of basis state 
         else
             break;
     }
-    return b;
+    return b-1;
 
 }
 
