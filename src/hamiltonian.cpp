@@ -14,11 +14,9 @@ void Hamiltonian::set_ham(){
     int b=0; //position of flipped state
     REP_TYPE flipstate=0;
     for (int a=0;a<_dim;a++){
-        cout <<"a= "<<a<<endl;
         for (int i=0;i<_N;i++){
             j=(i+1)%_N;
             if (compare_bits(_list[a],i,_list[a],j,_N)){
-                cout <<"i= "<<i<<endl;
                 _ham(a,a)+=double(1/4.);
             }
             else{
@@ -37,8 +35,14 @@ void Hamiltonian::fill(){
 }
 
 void Hamiltonian::print_matrix(){
-    if (_set)
+    if (_set){
+        /*cout.precision(1);
+        cout.setf(ios::fixed);
+        cout << setw(5) << left;
+        _ham.raw_print(cout, "H_1 =");
+        */
         cout << _ham<<endl;
+    }
     else
         cout << "Hamiltonian has not yet been set up."<<endl;
 }

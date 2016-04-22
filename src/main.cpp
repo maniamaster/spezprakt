@@ -3,9 +3,15 @@
 
 int main()
 {
+    int N; //system size
+    cout <<"set system size: ";
+    cin >>N;
+    
+    int m; //total magnetization counted in multiples of 1
+    cout <<"set total magnetization (in multiples of 1/2): ";
+    cin >>m;
+    cout <<"\n";
 
-    int N=4; //System size
-    int m=0; //total magnetization counted in multiples of 1
     bool testpos=1; //test the position finder of the states. Set to 1 for test.
 
     Hamiltonian testHam(N,m);
@@ -27,9 +33,11 @@ int main()
          }
     }
     
+    cout <<"\n";
     testHam.print_system_size();
     testHam.print_basis_dimension();
-        
+    cout <<"\n";
+
     //Hamiltonian matrix test:
     testHam.set_ham();
     testHam.print_matrix();
