@@ -58,4 +58,13 @@ void Hamiltonian::print_matrix(){
     else
         cout << "Hamiltonian has not yet been set up."<<endl;
 }
+
+void Hamiltonian::diagonalize(){
     
+    mat D = _ham;
+
+    vec eigval;
+    mat eigvec;
+
+    eig_sym(eigval,eigvec,D); //<<<<<<<---------------- Findet nötige libraries nicht!!!!!!!!
+}
