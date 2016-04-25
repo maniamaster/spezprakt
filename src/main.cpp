@@ -39,7 +39,7 @@ int main()
     cout <<"\n";
 
     //Hamiltonian matrix test:
-    testHam.set_ham();
+    testHam.set_ham(0.5);
     testHam.print_matrix();
     return 0;
 }

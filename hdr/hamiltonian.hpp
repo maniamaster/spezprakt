@@ -12,11 +12,12 @@ class Hamiltonian: public Basis{
     private:
         mat _ham;
         bool _set;
+        double _lambda;
         void fill();
 
     public:
         Hamiltonian(int N,int m);
-        void set_ham();
+        void set_ham(double mu);
         void diagonalize();
         void print_matrix();
 
