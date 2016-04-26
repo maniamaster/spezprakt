@@ -10,7 +10,11 @@ using namespace arma;
 class Hamiltonian: public Basis{
     private:
         mat _ham;
+        mat _diag;
+        mat _eigvec; //eigenvectors of hamilton matrix
+        vec _eigval; //eigenvalues
         bool _set;
+        bool _diagonalized;
         double _lambda;
         void fill();
 
@@ -18,8 +22,11 @@ class Hamiltonian: public Basis{
         Hamiltonian(int N,int m);
         void set_ham(double mu);
         void diagonalize();
-        void print_matrix();
-
+        void print_hamiltonian();
+        void print_diagonal();
+        void print_eigenvalues();
+        void print_eigenvectors();
+        void nat_2_eigen(vec natvec); 
             
     
 };

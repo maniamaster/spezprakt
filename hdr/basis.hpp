@@ -27,7 +27,7 @@ public:
     void print_basis_list();
     void print_basis_dimension();
     int get_dim();
-    REP_TYPE get_state(int i);
+    REP_TYPE get_basis_state(int i);
     int find_state(REP_TYPE s); //finds position pos € [1,_dim] of basis state s
 };
 

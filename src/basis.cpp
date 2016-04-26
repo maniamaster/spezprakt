@@ -33,7 +33,7 @@ void Basis::print_basis_list(){
     }
 }
 
-REP_TYPE Basis::get_state(int i){
+REP_TYPE Basis::get_basis_state(int i){
     return _list[i];
 }
 
