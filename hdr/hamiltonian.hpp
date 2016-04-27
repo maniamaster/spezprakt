@@ -26,8 +26,10 @@ class Hamiltonian: public Basis{
         void print_diagonal();
         void print_eigenvalues();
         void print_eigenvectors();
-        void nat_2_eigen(vec natvec); 
-            
+        vec nat_2_eigen(vec natvec); 
+        vec blub(vec blah){
+            return blah;
+        }
     
 };
 

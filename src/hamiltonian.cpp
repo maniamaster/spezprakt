@@ -1,5 +1,6 @@
 #include <hamiltonian.hpp>
 
+
 Hamiltonian::Hamiltonian(int N,int m){
     _N=N;
     _m=m;
@@ -87,15 +88,11 @@ void Hamiltonian::print_eigenvectors(){
         cout << "Hamiltonian not yet diagonalied."<<endl;
 }
 
-void Hamiltonian::nat_2_eigen(vec natvec){ //!!!!!!!!!!!!!!!!<<<<<<<<<<<-------(Segmentation error (core dumped))
-
+vec Hamiltonian::nat_2_eigen(vec natvec){ 
     if (_diagonalized){
-        cout << natvec(0) <<endl; //kann nichts ausgeben, core dumped
-        //natvec.print();
-        //vec v = inv(_eigvec)*natvec;
-        //return v;
-    }
-    else
-        cout << "Hamiltonian not yet diagonalied."<<endl;
-
+        vec res= inv(_eigvec)*natvec;
+        return res;
+    } 
+    cout << "Hamiltonian not yet diagonalied."<<endl;
+    return natvec;
 }

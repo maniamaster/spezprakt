@@ -1,4 +1,3 @@
-#include <basis.hpp>
 #include <hamiltonian.hpp>
 
 int main()
@@ -45,11 +44,13 @@ int main()
     testHam.print_diagonal();
     testHam.print_eigenvalues();
     testHam.print_eigenvectors();
+    
     vec initstate(testHam.get_dim());
     initstate.randu();
     initstate.print("state in natural basis: ");
-    testHam.nat_2_eigen(initstate);
-    //transstate.print("state in eigenbasis: ");
+    vec eigenstate=testHam.nat_2_eigen(initstate);
+    eigenstate.print("state in eigenbasis: ");
+
 
     return 0;
 }
