@@ -3,6 +3,7 @@
 #include <basis.hpp>
 #include <armadillo>
 #include <iostream>
+#include <complex>
 
 using namespace std;
 using namespace arma;
@@ -13,6 +14,7 @@ class Hamiltonian: public Basis{
         mat _diag;
         mat _eigvec; //eigenvectors of hamilton matrix
         vec _eigval; //eigenvalues
+        cx_vec _cxeigval;
         bool _set;
         bool _diagonalized;
         double _lambda;
@@ -27,9 +29,8 @@ class Hamiltonian: public Basis{
         void print_eigenvalues();
         void print_eigenvectors();
         vec nat_2_eigen(vec natvec); 
-        vec blub(vec blah){
-            return blah;
-        }
+        vec eigen_2_nat(vec eigenbasisvec);
+        cx_vec time_translate(cx_vec state,double t);
     
 };
 

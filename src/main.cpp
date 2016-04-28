@@ -45,11 +45,30 @@ int main()
     testHam.print_eigenvalues();
     testHam.print_eigenvectors();
     
+    //Diagonalisierung Test:
     vec initstate(testHam.get_dim());
     initstate.randu();
     initstate.print("state in natural basis: ");
     vec eigenstate=testHam.nat_2_eigen(initstate);
     eigenstate.print("state in eigenbasis: ");
+    initstate=testHam.eigen_2_nat(eigenstate);
+    initstate.print("and again in natural basis: ");
+
+    //Zeitentwicklung Test:
+    cx_vec  complstate=cx_vec(initstate,zeros(testHam.get_dim()));
+    complstate.print("converted to complex vector: ");
+    double dt;
+    double t=0;
+    for(;;){
+        cout << "insert time interval:"<<endl;
+        cin.clear();
+        cin >> dt;
+        t=t+dt;
+        complstate=testHam.time_translate(complstate,dt);
+        cout << "t= " <<t<<" :"<<endl<<complstate<<endl;
+    }
+    
+
 
 
     return 0;
