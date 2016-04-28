@@ -55,7 +55,7 @@ int main()
     initstate.print("and again in natural basis: ");
 
     //Zeitentwicklung Test:
-    cx_vec  complstate=cx_vec(initstate,zeros(testHam.get_dim()));
+    cx_vec  complstate=cx_vec(eigenstate,zeros(testHam.get_dim()));
     complstate.print("converted to complex vector: ");
     double dt;
     double t=0;
