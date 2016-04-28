@@ -4,7 +4,7 @@
 Hamiltonian::Hamiltonian(int N,int m){
     _N=N;
     _m=m;
-    _lambda=0.1;
+    _lambda=5;
     _set=0;
     _diagonalized=0;
     generate_basis_list();
@@ -110,7 +110,7 @@ vec Hamiltonian::eigen_2_nat(vec eigenbasisvec){
 cx_vec Hamiltonian::time_translate(cx_vec state,double dt){
     complex<double> J= complex<double> (0,1) ;
     for (int i=0;i<_dim;i++){
-        state(i)=exp(J*_cxeigval(i)*dt)*state(i);
+        state(i)=exp(-J*_cxeigval(i)*dt)*state(i);
     }
     return state;
 }
