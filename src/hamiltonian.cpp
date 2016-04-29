@@ -4,7 +4,7 @@
 Hamiltonian::Hamiltonian(int N,int m){
     _N=N;
     _m=m;
-    _lambda=5;
+    _lambda=0;
     _set=0;
     _diagonalized=0;
     generate_basis_list();
@@ -60,7 +60,7 @@ void Hamiltonian::diagonalize(){
     
     eig_sym(_eigval,_eigvec,_ham);
 
-    _diag = inv(_eigvec)*_ham*_eigvec;
+    _diag = _eigvec.t()*_ham*_eigvec;
     _cxeigval = cx_vec(_eigval,zeros(_dim));
 
     _diagonalized=1;
@@ -91,7 +91,7 @@ void Hamiltonian::print_eigenvectors(){
 
 vec Hamiltonian::nat_2_eigen(vec natvec){ 
     if (_diagonalized){
-        vec res= inv(_eigvec)*natvec;
+        vec res= _eigvec.t()*natvec;
         return res;
     } 
     cout << "Hamiltonian not yet diagonalied."<<endl;
@@ -108,9 +108,13 @@ vec Hamiltonian::eigen_2_nat(vec eigenbasisvec){
 }
 
 cx_vec Hamiltonian::time_translate(cx_vec state,double dt){
-    complex<double> J= complex<double> (0,1) ;
-    for (int i=0;i<_dim;i++){
-        state(i)=exp(-J*_cxeigval(i)*dt)*state(i);
+    if (_diagonalized){
+        complex<double> J= complex<double> (0,1) ;
+        for (int i=0;i<_dim;i++){
+            state(i)=exp(-J*_cxeigval(i)*dt)*state(i);
+        }
+        return state;
     }
+    cout << "not diagonalized yet."<<endl;
     return state;
 }

@@ -39,24 +39,24 @@ int main()
     cout <<"\n";
 
     //Hamiltonian matrix test:
-    testHam.set_ham(1.);
-  //  testHam.print_hamiltonian();
+    testHam.set_ham(0.6);
+   // testHam.print_hamiltonian();
     testHam.diagonalize();
-  //  testHam.print_diagonal();
-  //  testHam.print_eigenvalues();
-  //  testHam.print_eigenvectors();
+    //testHam.print_diagonal();
+    testHam.print_eigenvalues();
     
     //Diagonalisierung Test:
     vec initstate(testHam.get_dim());
     initstate.randu();
-   // initstate.print("state in natural basis: ");
+    initstate=initstate/norm(initstate);
+    initstate.print("state in natural basis: ");
     vec eigenstate=testHam.nat_2_eigen(initstate);
-   // eigenstate.print("state in eigenbasis: ");
+    eigenstate.print("state in eigenbasis: ");
     initstate=testHam.eigen_2_nat(eigenstate);
-   // initstate.print("and again in natural basis: ");
+    initstate.print("and again in natural basis: ");
 
     //Zeitentwicklung Test:
-    /*
+   /* 
     cx_vec  complstate=cx_vec(eigenstate,zeros(testHam.get_dim()));
     complstate.print("converted to complex vector: ");
     double dt;
@@ -69,7 +69,7 @@ int main()
         complstate=testHam.time_translate(complstate,dt);
         cout << "t= " <<t<<" :"<<endl<<complstate<<endl;
     }
-    */
+   */ 
     
     //Plot von <Y(0)|Y(t)> :
     ofstream myfile;
@@ -77,15 +77,14 @@ int main()
 
     cx_vec state=cx_vec(eigenstate,zeros(testHam.get_dim()));
     cx_vec state_0=state;;
-    
+   
+    cout <<"norm: "<< norm(state)<< endl;
     double dt=0.01;
     double t=0;
-    while (t<100){
+    double res=0;
+    while (t<1000){
         state=testHam.time_translate(state,dt);
-        double res=0;
-        for (int i=0;i<testHam.get_dim();i++){
-           res+=abs(real(state_0(i))*real(state(i))+imag(state_0(i))*imag(state(i)))/(norm(state_0)*norm(state));
-        }
+        res=norm(cdot(state_0,state));
         myfile << t << "\t" << res << endl;
         t=t+dt;
     }
