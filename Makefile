@@ -10,7 +10,7 @@ SRCDIR=./src/
 HDRDIR=./hdr/
 OBJDIR=./bin/obj/
 
-CPPSRC= basis.cpp hamiltonian.cpp main.cpp
+CPPSRC= basis.cpp hamiltonian.cpp timeevolver.cpp main.cpp
 CPPHDR= $(CPPSRC:.cpp=.hpp)
 CPPOBJ= $(addprefix $(OBJDIR), $(CPPSRC:.cpp=.cpp.o))
 

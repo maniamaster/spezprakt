@@ -1,4 +1,5 @@
 #include <hamiltonian.hpp>
+#include <timeevolver.hpp>
 #include <fstream>
 
 int main()
@@ -16,12 +17,13 @@ int main()
 
     Hamiltonian testHam(N,m);
 
-    //testHam.print_system_size();
-    //testHam.print_basis_list();
-    //testHam.print_basis_dimension();
+    testHam.print_basis_list();
+    testHam.print_system_size();
+    testHam.print_basis_dimension();
     
     //Test der Suchfunktion:
-    if (testpos){
+    
+   /* if (testpos){
         int pos=0;
         char* out;
          for(int i=0;i<testHam.get_dim();i++){
@@ -32,7 +34,8 @@ int main()
              cout <<"integer: " <<state<<" binary: "<<out<<" pos: "<<pos<<endl;
          }
     }
-    
+   */ 
+
     cout <<"\n";
     testHam.print_system_size();
     testHam.print_basis_dimension();
@@ -43,18 +46,15 @@ int main()
     //testHam.print_hamiltonian();
     testHam.diagonalize();
     //testHam.print_diagonal();
-    //testHam.print_eigenvalues();
-    //testHam.print_eigenvectors();
+    //testHam.print_eigval();
+    //testHam.print_eigvec();
     
     //Diagonalisierung Test:
     vec initstate(testHam.get_dim());
     initstate.randu();
     initstate=initstate/norm(initstate);
-    initstate.print("state in natural basis: ");
+   // initstate.print("state in natural basis: ");
     vec eigenstate=testHam.nat_2_eigen(initstate);
-    eigenstate.print("state in eigenbasis: ");
-    initstate=testHam.eigen_2_nat(eigenstate);
-    initstate.print("and again in natural basis: ");
 
     //Zeitentwicklung Test:
    /* 
@@ -79,12 +79,13 @@ int main()
     cx_vec state=cx_vec(eigenstate,zeros(testHam.get_dim()));
     cx_vec state_0=state;;
    
-    cout <<"norm: "<< norm(state)<< endl;
+
     double dt=0.01;
     double t=0;
     double res=0;
-    while (t<200){
-        state=testHam.time_translate(state,dt);
+    Timeevolver testTime(&testHam,&state,dt);
+    while (t<10){
+        testTime.time_fw();
         res=norm(cdot(state_0,state));
         myfile << t << "\t" << res << endl;
         t=t+dt;

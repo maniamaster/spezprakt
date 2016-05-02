@@ -24,10 +24,13 @@ class Hamiltonian: public Basis{
         Hamiltonian(int N,int m);
         void set_ham(double mu);
         void diagonalize();
+        bool get_diagonalized();
         void print_hamiltonian();
         void print_diagonal();
-        void print_eigenvalues();
-        void print_eigenvectors();
+        void print_eigval();
+        cx_vec get_cxeigval();
+        void print_eigvec();
+        mat get_eigvec();
         vec nat_2_eigen(vec natvec); 
         vec eigen_2_nat(vec eigenbasisvec);
         cx_vec time_translate(cx_vec state,double t);

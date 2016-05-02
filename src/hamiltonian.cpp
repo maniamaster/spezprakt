@@ -42,8 +42,7 @@ void Hamiltonian::set_ham(double mu){
         }
     }
     _set=1;
-}
-
+} 
 void Hamiltonian::fill(){
     _ham=mat(_dim,_dim,fill::zeros);
 }
@@ -75,14 +74,14 @@ void Hamiltonian::print_diagonal(){
 
 }
 
-void Hamiltonian::print_eigenvalues(){
+void Hamiltonian::print_eigval(){
     if (_diagonalized)
         _eigval.print("eigenvalues: ");
     else
         cout << "Hamiltonian not yet diagonalied."<<endl;
 }
 
-void Hamiltonian::print_eigenvectors(){
+void Hamiltonian::print_eigvec(){
     if (_diagonalized)
         _eigvec.print("P= ");
     else
@@ -117,4 +116,16 @@ cx_vec Hamiltonian::time_translate(cx_vec state,double dt){
     }
     cout << "not diagonalized yet."<<endl;
     return state;
+}
+
+mat Hamiltonian::get_eigvec(){
+    return _eigvec;
+}
+
+cx_vec Hamiltonian::get_cxeigval(){
+    return _cxeigval;
+}
+
+bool Hamiltonian::get_diagonalized(){
+    return _diagonalized;
 }
