@@ -39,11 +39,12 @@ int main()
     cout <<"\n";
 
     //Hamiltonian matrix test:
-    testHam.set_ham(0.6);
-   // testHam.print_hamiltonian();
+    testHam.set_ham(0.5);
+    //testHam.print_hamiltonian();
     testHam.diagonalize();
     //testHam.print_diagonal();
-    testHam.print_eigenvalues();
+    //testHam.print_eigenvalues();
+    //testHam.print_eigenvectors();
     
     //Diagonalisierung Test:
     vec initstate(testHam.get_dim());
@@ -73,7 +74,7 @@ int main()
     
     //Plot von <Y(0)|Y(t)> :
     ofstream myfile;
-    myfile.open("test.txt");
+    myfile.open("test.dat");
 
     cx_vec state=cx_vec(eigenstate,zeros(testHam.get_dim()));
     cx_vec state_0=state;;
@@ -82,7 +83,7 @@ int main()
     double dt=0.01;
     double t=0;
     double res=0;
-    while (t<1000){
+    while (t<200){
         state=testHam.time_translate(state,dt);
         res=norm(cdot(state_0,state));
         myfile << t << "\t" << res << endl;
