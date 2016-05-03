@@ -5,13 +5,16 @@
 
     //***functions***
     //
-vec init_right_up(Hamiltonian* h){ //returns initial state vector with all spins up on the right
+    vec init_right_up(Hamiltonian* h){ //returns initial state vector with all spins up on the right
     REP_TYPE state=0;
-    int n=((h->get_system_size())-(h->get_magnetization()))/2;
+    int n=((h->get_system_size())+(h->get_magnetization()))/2;
     for (int i=0;i<n;i++){
         cout <<i<<endl;
         state+=pow(2,i);  //<<<---- hier scheint er sich aufzuhängen. alle m=0 fälle scheinen zu funktionieren, der rest nicht.
     }
+
+    print_bits(state,h->get_system_size());
+    cout << n <<endl;
     int pos = h->find_state(state);
     vec res=vec(zeros(h->get_dim()));
     res(pos)=1;
@@ -70,6 +73,7 @@ int main()
     
     //Diagonalisierung Test:
     vec initstate=init_right_up(&testHam);
+    //vec initstate(testHam.get_dim());
     //initstate.randu();
     initstate=initstate/norm(initstate);
     initstate.print("state in natural basis: ");
@@ -96,18 +100,21 @@ int main()
     myfile.open("test.dat");
 
     cx_vec state=cx_vec(eigenstate,zeros(testHam.get_dim()));
-    cx_vec state_0=state;;
+    cx_vec state_02=state;
+    cx_vec state_0=state;
    
 
     double dt=0.01;
     double t=0;
     double res=0;
-    Timeevolver testTime(&testHam,&state,dt);
+    Timeevolver testTime(&testHam);
+    res=norm(cdot(state_0,state));
+    myfile << t << "\t" << res << endl;
     while (t<100){
-        testTime.time_fw();
+        testTime.time_fw(&state,dt);
+        t=t+dt;
         res=norm(cdot(state_0,state));
         myfile << t << "\t" << res << endl;
-        t=t+dt;
     }
     myfile.close();
 

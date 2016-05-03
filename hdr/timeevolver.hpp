@@ -9,14 +9,12 @@ using namespace arma;
 
 class Timeevolver{
     private:
-        cx_vec * _state;
-        double _dt;
         complex<double> _J;
         Hamiltonian* _h;
     public:
-        Timeevolver(Hamiltonian* h,cx_vec *initstate,double dt);
-        void time_fw();
-        void time_bw();
+        Timeevolver(Hamiltonian* h);
+        void time_fw(cx_vec* state,double dt);
+        void time_bw(cx_vec* state,double dt);
 
 };
 
