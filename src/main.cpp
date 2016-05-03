@@ -2,8 +2,27 @@
 #include <timeevolver.hpp>
 #include <fstream>
 
+
+    //***functions***
+    //
+vec init_right_up(Hamiltonian* h){ //returns initial state vector with all spins up on the right
+    REP_TYPE state=0;
+    int n=((h->get_system_size())-(h->get_magnetization()))/2;
+    for (int i=0;i<n;i++){
+        cout <<i<<endl;
+        state+=pow(2,i);  //<<<---- hier scheint er sich aufzuhängen. alle m=0 fälle scheinen zu funktionieren, der rest nicht.
+    }
+    int pos = h->find_state(state);
+    vec res=vec(zeros(h->get_dim()));
+    res(pos)=1;
+    return res;
+}
+
+
+
 int main()
 {
+
     int N; //system size
     cout <<"set system size: ";
     cin >>N;
@@ -17,13 +36,10 @@ int main()
 
     Hamiltonian testHam(N,m);
 
-    testHam.print_basis_list();
-    testHam.print_system_size();
-    testHam.print_basis_dimension();
     
     //Test der Suchfunktion:
     
-   /* if (testpos){
+    if (testpos){
         int pos=0;
         char* out;
          for(int i=0;i<testHam.get_dim();i++){
@@ -34,12 +50,15 @@ int main()
              cout <<"integer: " <<state<<" binary: "<<out<<" pos: "<<pos<<endl;
          }
     }
-   */ 
+    
 
     cout <<"\n";
+   // testHam.print_basis_list();
     testHam.print_system_size();
     testHam.print_basis_dimension();
     cout <<"\n";
+
+
 
     //Hamiltonian matrix test:
     testHam.set_ham(0.5);
@@ -50,10 +69,10 @@ int main()
     //testHam.print_eigvec();
     
     //Diagonalisierung Test:
-    vec initstate(testHam.get_dim());
-    initstate.randu();
+    vec initstate=init_right_up(&testHam);
+    //initstate.randu();
     initstate=initstate/norm(initstate);
-   // initstate.print("state in natural basis: ");
+    initstate.print("state in natural basis: ");
     vec eigenstate=testHam.nat_2_eigen(initstate);
 
     //Zeitentwicklung Test:
@@ -84,7 +103,7 @@ int main()
     double t=0;
     double res=0;
     Timeevolver testTime(&testHam,&state,dt);
-    while (t<10){
+    while (t<100){
         testTime.time_fw();
         res=norm(cdot(state_0,state));
         myfile << t << "\t" << res << endl;

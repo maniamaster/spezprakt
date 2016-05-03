@@ -65,6 +65,10 @@ int Basis::find_state(REP_TYPE s){ //finds position € [1,_dim] of basis state 
 
 }
 
+int Basis::get_system_size(){
+    return _N;
+}
 
-
-
+int Basis::get_magnetization(){
+    return _m;
+}

@@ -129,3 +129,4 @@ cx_vec Hamiltonian::get_cxeigval(){
 bool Hamiltonian::get_diagonalized(){
     return _diagonalized;
 }
+

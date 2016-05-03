@@ -23,12 +23,14 @@ public:
  	Basis(int N, int m);
  	Basis(){};
 	void print_system_size();
+    int get_system_size();
     void generate_basis_list();
     void print_basis_list();
     void print_basis_dimension();
     int get_dim();
     REP_TYPE get_basis_state(int i);
     int find_state(REP_TYPE s); //finds position pos € [1,_dim] of basis state s
+    int get_magnetization();
 };
 
 
