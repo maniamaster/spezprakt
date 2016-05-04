@@ -38,7 +38,7 @@ int main()
     Hamiltonian testHam(N,m);
 
     
-    //Test der Suchfunktion:
+//Test der Suchfunktion:
     
     if (testpos){
         int pos=0;
@@ -61,7 +61,7 @@ int main()
 
 
 
-    //Hamiltonian matrix test:
+//Hamiltonian matrix test:
     testHam.set_ham(0.5);
     //testHam.print_hamiltonian();
     testHam.diagonalize();
@@ -71,7 +71,7 @@ int main()
     
   
 
-    //Diagonalisierung Test:
+//Diagonalisierung Test:
     vec initstate=init_right_up(&testHam);
     //vec initstate(testHam.get_dim());
     //initstate.randu();
@@ -81,11 +81,11 @@ int main()
     cx_vec state=cx_vec(initstate,zeros(testHam.get_dim()));
    
     state.print("state in natural basis (complex): ");
-
+    cout <<"norm des natvektors: "<<norm(state)<<endl;
     state=testHam.nat_2_eigen(state); //in eigenbasis transformieren
-    
-    state.print("state in eigenbasis (complex): ");
-    
+    state.print("state in eigenbasis (complex): "); 
+    cout <<"norm des eigenbasisvektors: "<<norm(state)<<endl;
+
     cx_vec state_0=state;
     
 
@@ -105,7 +105,7 @@ int main()
     }
    */ 
     
-    //Plot von <Y(0)|Y(t)> :
+//Plot von <Y(0)|Y(t)> :
     ofstream myfile;
     myfile.open("test.dat");
 
@@ -113,13 +113,12 @@ int main()
 
     //Test der Messung einzelner Spins:
     Measurement testMes(&testHam);
+    cout << "Measurement of Sz_i before time translation:" <<endl; 
     for (int i=1;i<=testHam.get_system_size();i++)
        cout <<"S_"<<i<<" : "<<testMes.sz_i(&state,i)<<endl; 
 
-
-
-
-
+    //time translation:
+    cout <<endl<<"<><><><><><><><><><><><><><><><>Zeitentwicklung<><><><><><><><><><><><><><><>"<<endl<<endl;
     double dt=0.01;
     double t=0;
     double res=0;
@@ -133,6 +132,19 @@ int main()
         myfile << t << "\t" << res << endl;
     }
     myfile.close();
-
+     
+    state.print("state in eigenbasis (complex): ");
+    cout <<"norm des eigenbasisvektors: "<<norm(state)<<endl; 
+    cx_vec natstate=testHam.eigen_2_nat(state);
+    natstate.print("state in natbasis (complex): ");
+    cout <<"norm des natbasisvektors: "<<norm(natstate)<<endl; 
+    //erneutes Messen von Sz nach zeitentwicklung:
+    cout << "Measurement of Sz_i after time translation:" <<endl; 
+    for (int i=1;i<=testHam.get_system_size();i++)
+       cout <<"S_"<<i<<" : "<<testMes.sz_i(&state,i)<<endl; 
+    
+    
+    
+    
     return 0;
 }
