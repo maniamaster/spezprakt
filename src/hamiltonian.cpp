@@ -4,7 +4,7 @@
 Hamiltonian::Hamiltonian(int N,int m){
     _N=N;
     _m=m;
-    _lambda=0;
+    _lambda=0.1;
     _set=0;
     _diagonalized=0;
     generate_basis_list();

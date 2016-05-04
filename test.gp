@@ -6,8 +6,7 @@ set samples 2000
 set linetype 10
 set autoscale
 
-p "test2.dat" u 1:2  with points lc rgb "green" ps 0.5 ,\
-"test.dat" u 1:2  with points lc rgb "red" ps 0.1 
+p "test.dat" u 1:2  with points lc rgb "red" ps 0.1 
 
 
 set output

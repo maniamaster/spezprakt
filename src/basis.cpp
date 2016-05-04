@@ -72,3 +72,7 @@ int Basis::get_system_size(){
 int Basis::get_magnetization(){
     return _m;
 }
+
+REP_TYPE Basis::get_state(int i){
+    return _list[i];
+}

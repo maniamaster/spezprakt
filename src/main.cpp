@@ -1,20 +1,18 @@
 #include <hamiltonian.hpp>
 #include <timeevolver.hpp>
+#include <measurement.hpp>
 #include <fstream>
 
 
     //***functions***
     //
-    vec init_right_up(Hamiltonian* h){ //returns initial state vector with all spins up on the right
+vec init_right_up(Hamiltonian* h){ //returns initial state vector with all spins up on the right
     REP_TYPE state=0;
     int n=((h->get_system_size())+(h->get_magnetization()))/2;
     for (int i=0;i<n;i++){
-        cout <<i<<endl;
-        state+=pow(2,i);  //<<<---- hier scheint er sich aufzuhängen. alle m=0 fälle scheinen zu funktionieren, der rest nicht.
+        state+=pow(2,i);  
     }
 
-    print_bits(state,h->get_system_size());
-    cout << n <<endl;
     int pos = h->find_state(state);
     vec res=vec(zeros(h->get_dim()));
     res(pos)=1;
@@ -35,7 +33,7 @@ int main()
     cin >>m;
     cout <<"\n";
 
-    bool testpos=1; //test the position finder of the states. Set to 1 for test.
+    bool testpos=0; //test the position finder of the states. Set to 1 for test.
 
     Hamiltonian testHam(N,m);
 
@@ -56,7 +54,7 @@ int main()
     
 
     cout <<"\n";
-   // testHam.print_basis_list();
+    testHam.print_basis_list();
     testHam.print_system_size();
     testHam.print_basis_dimension();
     cout <<"\n";
@@ -78,7 +76,7 @@ int main()
     initstate=initstate/norm(initstate);
     initstate.print("state in natural basis: ");
     vec eigenstate=testHam.nat_2_eigen(initstate);
-
+    
     //Zeitentwicklung Test:
    /* 
     cx_vec  complstate=cx_vec(eigenstate,zeros(testHam.get_dim()));
@@ -100,9 +98,18 @@ int main()
     myfile.open("test.dat");
 
     cx_vec state=cx_vec(eigenstate,zeros(testHam.get_dim()));
-    cx_vec state_02=state;
     cx_vec state_0=state;
-   
+  
+
+
+    //Test der Messung einzelner Spins:
+    Measurement testMes(&testHam);
+    for (int i=1;i<=testHam.get_system_size();i++)
+        cout <<"S_"<<i<<" : "<<testMes.sz_i(&state,i)<<endl; 
+
+
+
+
 
     double dt=0.01;
     double t=0;
