@@ -4,7 +4,7 @@
 Hamiltonian::Hamiltonian(int N,int m){
     _N=N;
     _m=m;
-    _lambda=0.1;
+    _lambda=0;
     _set=0;
     _diagonalized=0;
     generate_basis_list();
@@ -88,18 +88,18 @@ void Hamiltonian::print_eigvec(){
         cout << "Hamiltonian not yet diagonalied."<<endl;
 }
 
-vec Hamiltonian::nat_2_eigen(vec natvec){ 
+cx_vec Hamiltonian::nat_2_eigen(cx_vec natvec){ 
     if (_diagonalized){
-        vec res= _eigvec.t()*natvec;
+        cx_vec res= _eigvec.t()*natvec;
         return res;
     } 
     cout << "Hamiltonian not yet diagonalied."<<endl;
     return natvec;
 }
 
-vec Hamiltonian::eigen_2_nat(vec eigenbasisvec){ 
+cx_vec Hamiltonian::eigen_2_nat(cx_vec eigenbasisvec){ 
     if (_diagonalized){
-        vec res= _eigvec*eigenbasisvec;
+        cx_vec res= _eigvec*eigenbasisvec;
         return res;
     } 
     cout << "Hamiltonian not yet diagonalied."<<endl;

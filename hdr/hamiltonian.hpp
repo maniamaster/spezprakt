@@ -31,8 +31,8 @@ class Hamiltonian: public Basis{
         cx_vec get_cxeigval();
         void print_eigvec();
         mat get_eigvec();
-        vec nat_2_eigen(vec natvec); 
-        vec eigen_2_nat(vec eigenbasisvec);
+        cx_vec nat_2_eigen(cx_vec natvec); 
+        cx_vec eigen_2_nat(cx_vec eigenbasisvec);
         cx_vec time_translate(cx_vec state,double t);
     
 };

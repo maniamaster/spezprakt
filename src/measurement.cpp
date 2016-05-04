@@ -6,7 +6,7 @@ Measurement::Measurement(Hamiltonian* h){
 }
 
 double Measurement::sz_i(cx_vec* state,int i){
-    *state= // konvertierung in natural basis (problem da umwandlung bis jetzt nur mit reellen vektoren geht.)
+    *state=_h->eigen_2_nat(*state); 
     double result=0;
     for (int n=0;n<(_h->get_dim());n++){
         int spin=0;
@@ -16,6 +16,7 @@ double Measurement::sz_i(cx_vec* state,int i){
             spin=count_set_bits(_h->get_state(n),i);
         result+=norm((*state)(n)*(*state)(n))*(double(spin)-1/2.);
     }
+    *state=_h->nat_2_eigen(*state);
     return result;
 }
 

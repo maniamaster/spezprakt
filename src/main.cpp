@@ -69,14 +69,26 @@ int main()
     //testHam.print_eigval();
     //testHam.print_eigvec();
     
+  
+
     //Diagonalisierung Test:
     vec initstate=init_right_up(&testHam);
     //vec initstate(testHam.get_dim());
     //initstate.randu();
     initstate=initstate/norm(initstate);
     initstate.print("state in natural basis: ");
-    vec eigenstate=testHam.nat_2_eigen(initstate);
     
+    cx_vec state=cx_vec(initstate,zeros(testHam.get_dim()));
+   
+    state.print("state in natural basis (complex): ");
+
+    state=testHam.nat_2_eigen(state); //in eigenbasis transformieren
+    
+    state.print("state in eigenbasis (complex): ");
+    
+    cx_vec state_0=state;
+    
+
     //Zeitentwicklung Test:
    /* 
     cx_vec  complstate=cx_vec(eigenstate,zeros(testHam.get_dim()));
@@ -97,15 +109,12 @@ int main()
     ofstream myfile;
     myfile.open("test.dat");
 
-    cx_vec state=cx_vec(eigenstate,zeros(testHam.get_dim()));
-    cx_vec state_0=state;
-  
-
+    
 
     //Test der Messung einzelner Spins:
     Measurement testMes(&testHam);
     for (int i=1;i<=testHam.get_system_size();i++)
-        cout <<"S_"<<i<<" : "<<testMes.sz_i(&state,i)<<endl; 
+       cout <<"S_"<<i<<" : "<<testMes.sz_i(&state,i)<<endl; 
 
 
 
