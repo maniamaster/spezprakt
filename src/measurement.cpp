@@ -16,7 +16,7 @@ double Measurement::sz_i(cx_vec* state,int i){
             spin=count_set_bits(_h->get_state(n),i)-count_set_bits(_h->get_state(n),i-1);
         else
             spin=count_set_bits(_h->get_state(n),i);
-        cout <<"spin: "<<double(spin)-1/2.<<" |c_n|^2: "<<norm((*state)(n))<<endl;
+     //   cout <<"spin: "<<double(spin)-1/2.<<" |c_n|^2: "<<norm((*state)(n))<<endl;
 
         result+=norm((*state)(n))*(double(spin)-1/2.);
     }
