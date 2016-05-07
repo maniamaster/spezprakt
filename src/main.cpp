@@ -92,37 +92,70 @@ void plot_sz(Hamiltonian &h){
     Measurement testMes(&h);
     Timeevolver testTime(&h);
     for (int i=1;i<=h.get_system_size();i++)
-        myfile <<i<<"\t"<<testMes.sz_i(&state,i)<<endl;sz <<"reset"<<endl;
-    myfile.close();
+        myfile <<testMes.sz_i(&state,i)<<"\t";
+    myfile<<endl;
     sz <<"reset"<<endl;
     sz <<"set term eps"<<endl;
     sz <<"set output 'sz.eps'"<<endl;
-    sz <<"set samples 2000"<<endl;
-    sz <<"set yrange [-0.6:0.6]"<<endl;
-    sz <<"p 'sz.dat' u 1:2  with points lc rgb \"red\" ps 1 "<<endl;
-    sz <<"set output"<<endl;
  
     //time translation:
     cout <<endl<<"<><><><><><><><><><><><><><><><>Zeitentwicklung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    double dt=0.1;
+    double dt=0.01;
     double t=0;
     while (t<100){
         testTime.time_fw(&state,dt);
         t=t+dt;
-        myfile.open("sz.dat");
         for (int i=1;i<=h.get_system_size();i++)
-            myfile <<i<<"\t"<<testMes.sz_i(&state,i)<<endl;
-        sz <<"reset"<<endl;
-        sz <<"set term eps"<<endl;
-        sz <<"set output 'sz.eps'"<<endl;
-        sz <<"set samples 2000"<<endl;
-        sz <<"p 'sz.dat' u 1:2  with points lc rgb \"red\" ps 1 "<<endl;
-        sz <<"set output"<<endl;  
-        myfile.close(); 
-        sleep(1);
+            myfile << testMes.sz_i(&state,i)<<"\t";
+        myfile << endl;
     }
+    sz <<"p 'sz.dat' matrix with image" <<endl;
+    sz <<"set output"<<endl;  
+    myfile.close(); 
+}
 
-   myfile.close();
+void plot_szsz_n(Hamiltonian &h,int n){
+    Gnuplot szsz_n;
+    vec initstate=init_right_up(&h);
+    initstate=initstate/norm(initstate);
+    cx_vec state=cx_vec(initstate,zeros(h.get_dim()));
+    state=h.nat_2_eigen(state); //in eigenbasis transformieren
+    cx_vec state_0=state;
+    ofstream myfile;
+    myfile.open("szsz_n.dat");
+    Measurement testMes(&h);
+    Timeevolver testTime(&h);
+    int k=0;
+    for (int i=1;i<=h.get_system_size();i++){
+         k=(i+n);
+         if  (k==h.get_system_size()+1)
+            k=1;
+         myfile <<testMes.sz_i(&state,i)*testMes.sz_i(&state,k)<<"\t";
+    }
+    myfile<<endl;
+    szsz_n <<"reset"<<endl;
+    szsz_n <<"set term eps"<<endl;
+    szsz_n <<"set output 'szsz_n.eps'"<<endl;
+ 
+    //time translation:
+    cout <<endl<<"<><><><><><><><><><><><><><><><>Zeitentwicklung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    double dt=0.01;
+    double t=0;
+    while (t<100){
+        testTime.time_fw(&state,dt);
+        t=t+dt;
+        for (int i=1;i<=h.get_system_size();i++){
+            k=(i+n);
+            if  (k==h.get_system_size()+1)
+                k=1;
+            myfile <<testMes.sz_i(&state,i)*testMes.sz_i(&state,k)<<"\t";
+        }
+
+        myfile << endl;
+    }
+    szsz_n <<"p 'szsz_n.dat' matrix with image" <<endl;
+    szsz_n <<"set output"<<endl;  
+    myfile.close(); 
 }
 //-------------------------------------------------------------------------------------------------------------------------------
 int main()
@@ -166,7 +199,7 @@ int main()
 
 
 //Hamiltonian matrix test:
-    testHam.set_ham(2); // mu=0.5
+    testHam.set_ham(0.6); // mu=0.5
     //testHam.print_hamiltonian();
     cout <<endl<<"<><><><><><><><><><><><><><><><>Diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
     testHam.diagonalize();
@@ -211,9 +244,7 @@ int main()
     }
    */ 
  
-   //plot_lochschmidt_echo(testHam); 
-
-   plot_sz(testHam);
+    
 //Plot von <Y(0)|Y(t)> :
     /*
     ofstream myfile;
@@ -254,7 +285,9 @@ int main()
     plot_lochschmidt_echo();
    */ 
     
-    
+    plot_lochschmidt_echo(testHam); 
+    plot_sz(testHam);
+    plot_szsz_n(testHam,1);
     
     return 0;
 }
