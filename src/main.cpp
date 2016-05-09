@@ -20,7 +20,7 @@ vec init_right_up(Hamiltonian* h){ //returns initial state vector with all spins
     return res;
 }
 
-void plot_lochschmidt_echo(Hamiltonian &h){
+void plot_lochschmidt_echo(Hamiltonian &h,double dt,double T){
    Gnuplot loch1;
    vec initstate=init_right_up(&h);
    initstate=initstate/norm(initstate);
@@ -42,13 +42,12 @@ void plot_lochschmidt_echo(Hamiltonian &h){
     
     //time translation:
     cout <<endl<<"<><><><><><><><><><><><><><><><>Zeitentwicklung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    double dt=0.01;
     double t=0;
     double res=0;
     Timeevolver testTime(&h);
     res=norm(cdot(state_0,state));
     myfile << t << "\t" << res << endl;
-    while (t<100){
+    while (t<T){
         testTime.time_fw(&state,dt);
         t=t+dt;
         res=norm(cdot(state_0,state));
@@ -80,7 +79,7 @@ void plot_lochschmidt_echo(Hamiltonian &h){
 
 }
 
-void plot_sz(Hamiltonian &h){
+void plot_sz(Hamiltonian &h,double dt,double T){
     Gnuplot sz;
     vec initstate=init_right_up(&h);
     initstate=initstate/norm(initstate);
@@ -100,9 +99,8 @@ void plot_sz(Hamiltonian &h){
  
     //time translation:
     cout <<endl<<"<><><><><><><><><><><><><><><><>Zeitentwicklung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    double dt=0.01;
     double t=0;
-    while (t<100){
+    while (t<T){
         testTime.time_fw(&state,dt);
         t=t+dt;
         for (int i=1;i<=h.get_system_size();i++)
@@ -114,7 +112,7 @@ void plot_sz(Hamiltonian &h){
     myfile.close(); 
 }
 
-void plot_szsz_n(Hamiltonian &h,int n){
+void plot_szsz_n(Hamiltonian &h,int n,double dt, double T){
     Gnuplot szsz_n;
     vec initstate=init_right_up(&h);
     initstate=initstate/norm(initstate);
@@ -139,9 +137,8 @@ void plot_szsz_n(Hamiltonian &h,int n){
  
     //time translation:
     cout <<endl<<"<><><><><><><><><><><><><><><><>Zeitentwicklung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    double dt=0.01;
     double t=0;
-    while (t<100){
+    while (t<T){
         testTime.time_fw(&state,dt);
         t=t+dt;
         for (int i=1;i<=h.get_system_size();i++){
@@ -199,10 +196,10 @@ int main()
 
 
 //Hamiltonian matrix test:
-    testHam.set_ham(0.6); // mu=0.5
+    //testHam.set_ham(2); // mu=0.5
     //testHam.print_hamiltonian();
-    cout <<endl<<"<><><><><><><><><><><><><><><><>Diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    testHam.diagonalize();
+    //cout <<endl<<"<><><><><><><><><><><><><><><><>Diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    //testHam.diagonalize();
     //testHam.print_diagonal();
     //testHam.print_eigval();
     //testHam.print_eigvec();
@@ -285,9 +282,12 @@ int main()
     plot_lochschmidt_echo();
    */ 
     
-    plot_lochschmidt_echo(testHam); 
-    plot_sz(testHam);
-    plot_szsz_n(testHam,1);
+    testHam.set_ham(2,0); // mu=0.5,Lambda=0.5
+    cout <<endl<<"<><><><><><><><><><><><><><><><>Diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_lochschmidt_echo(testHam,0.1,500);  //(ham,dt,T)
+    plot_sz(testHam,0.1,500);
+    plot_szsz_n(testHam,1,0.1,500); //(ham,n,dt,T)
     
     return 0;
 }

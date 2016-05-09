@@ -4,7 +4,6 @@
 Hamiltonian::Hamiltonian(int N,int m){
     _N=N;
     _m=m;
-    _lambda=0;
     _set=0;
     _diagonalized=0;
     generate_basis_list();
@@ -12,7 +11,8 @@ Hamiltonian::Hamiltonian(int N,int m){
 
 }
 
-void Hamiltonian::set_ham(double mu){
+void Hamiltonian::set_ham(double mu,double lambda){
+    _lambda=lambda;
     int j=0; 
     int k=0;
     int b=0; //position of flipped state

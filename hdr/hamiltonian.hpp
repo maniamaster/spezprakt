@@ -22,7 +22,7 @@ class Hamiltonian: public Basis{
 
     public:
         Hamiltonian(int N,int m);
-        void set_ham(double mu);
+        void set_ham(double mu,double lambda);
         void diagonalize();
         bool get_diagonalized();
         void print_hamiltonian();
