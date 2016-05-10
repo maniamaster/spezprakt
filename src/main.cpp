@@ -79,19 +79,20 @@ void plot_lochschmidt_echo(Hamiltonian &h,double dt,double T){
 
 }
 
-void plot_sz(Hamiltonian &h,double dt,double T){
+void plot_sz(Hamiltonian* h,double dt,double T){
+    int N=h->get_system_size();
     Gnuplot sz;
-    vec initstate=init_right_up(&h);
+    vec initstate=init_right_up(h);
     initstate=initstate/norm(initstate);
-    cx_vec state=cx_vec(initstate,zeros(h.get_dim()));
-    state=h.nat_2_eigen(state); //in eigenbasis transformieren
+    cx_vec state=cx_vec(initstate,zeros(h->get_dim()));
+    state=h->nat_2_eigen(state); //in eigenbasis transformieren
     cx_vec state_0=state;
     ofstream myfile;
     myfile.open("sz.dat");
-    Measurement testMes(&h);
-    Timeevolver testTime(&h);
-    for (int i=1;i<=h.get_system_size();i++)
-        myfile <<testMes.sz_i(&state,i)<<"\t";
+    Measurement testMes(h);
+    Timeevolver testTime(h);
+    for (int i=1;i<=N;i++)
+        myfile <<testMes.sz_i(state,i)<<"\t";
     myfile<<endl;
     sz <<"reset"<<endl;
     sz <<"set term eps"<<endl;
@@ -103,8 +104,8 @@ void plot_sz(Hamiltonian &h,double dt,double T){
     while (t<T){
         testTime.time_fw(&state,dt);
         t=t+dt;
-        for (int i=1;i<=h.get_system_size();i++)
-            myfile << testMes.sz_i(&state,i)<<"\t";
+        for (int i=1;i<=N;i++)
+            myfile << testMes.sz_i(state,i)<<"\t";
         myfile << endl;
     }
     sz <<"p 'sz.dat' matrix with image" <<endl;
@@ -112,23 +113,22 @@ void plot_sz(Hamiltonian &h,double dt,double T){
     myfile.close(); 
 }
 
-void plot_szsz_n(Hamiltonian &h,int n,double dt, double T){
+void plot_szsz_n(Hamiltonian* h,int n,double dt, double T){
+    int N=h->get_system_size();
     Gnuplot szsz_n;
-    vec initstate=init_right_up(&h);
+    vec initstate=init_right_up(h);
     initstate=initstate/norm(initstate);
-    cx_vec state=cx_vec(initstate,zeros(h.get_dim()));
-    state=h.nat_2_eigen(state); //in eigenbasis transformieren
+    cx_vec state=cx_vec(initstate,zeros(h->get_dim()));
+    state=h->nat_2_eigen(state); //in eigenbasis transformieren
     cx_vec state_0=state;
     ofstream myfile;
     myfile.open("szsz_n.dat");
-    Measurement testMes(&h);
-    Timeevolver testTime(&h);
+    Measurement testMes(h);
+    Timeevolver testTime(h);
     int k=0;
-    for (int i=1;i<=h.get_system_size();i++){
-         k=(i+n);
-         if  (k==h.get_system_size()+1)
-            k=1;
-         myfile <<testMes.sz_i(&state,i)*testMes.sz_i(&state,k)<<"\t";
+    for (int i=1;i<=N;i++){
+         k=(i+n-1)%N+1;
+         myfile <<testMes.sz_i(state,i)*testMes.sz_i(state,k)<<"\t";
     }
     myfile<<endl;
     szsz_n <<"reset"<<endl;
@@ -141,11 +141,9 @@ void plot_szsz_n(Hamiltonian &h,int n,double dt, double T){
     while (t<T){
         testTime.time_fw(&state,dt);
         t=t+dt;
-        for (int i=1;i<=h.get_system_size();i++){
-            k=(i+n);
-            if  (k==h.get_system_size()+1)
-                k=1;
-            myfile <<testMes.sz_i(&state,i)*testMes.sz_i(&state,k)<<"\t";
+        for (int i=1;i<=N;i++){
+            k=(i+n-1)%N+1;
+            myfile <<testMes.sz_i(state,i)*testMes.sz_i(state,k)<<"\t";
         }
 
         myfile << endl;
@@ -282,12 +280,12 @@ int main()
     plot_lochschmidt_echo();
    */ 
     
-    testHam.set_ham(2,0); // mu=0.5,Lambda=0.5
+    testHam.set_ham(0.5,0); // mu=0.5,Lambda=0.5
     cout <<endl<<"<><><><><><><><><><><><><><><><>Diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
     testHam.diagonalize();
-    plot_lochschmidt_echo(testHam,0.1,500);  //(ham,dt,T)
-    plot_sz(testHam,0.1,500);
-    plot_szsz_n(testHam,1,0.1,500); //(ham,n,dt,T)
+    plot_lochschmidt_echo(testHam,0.05,50);  //(ham,dt,T)
+    plot_sz(&testHam,0.05,50);
+    plot_szsz_n(&testHam,1,0.05,50); //(ham,n,dt,T)
     
     return 0;
 }

@@ -13,8 +13,8 @@ class Measurement{
         Hamiltonian* _h;
     public:
         Measurement(Hamiltonian* h);
-        double sz_i(cx_vec* state,int i);
-        double sz_i_sz_in(cx_vec* state,int i,int n);
+        double sz_i(cx_vec state,int i);
+        double sz_i_sz_in(cx_vec state,int i,int n);
 
 };
 
