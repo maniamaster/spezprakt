@@ -163,6 +163,15 @@ REP_TYPE get_section(REP_TYPE n, int i, int j, int N) {
     return res;
 }
 
+//Returns value of bit i
+int get_sz(REP_TYPE n, int i, int N) {
+    i = i % N;
+
+    n = n >> i;
+
+    return 2 * (i & 1) - 1;
+}
+
 int cnt_smaller_same_magn(REP_TYPE n, int N) {
     int i, up;
     int res;
@@ -260,4 +269,17 @@ void print_bits(REP_TYPE n, int N) {
 	out = &(out[sizeof(REP_TYPE)*CHAR_BIT - N]);
 
 	printf("%s\n", out);
+}
+
+REP_TYPE string_to_state(char* str, int N) {
+    int i;
+    REP_TYPE res = 0;
+
+    for(i = 0; i < N; i++) {
+        if(str[i] == '1') {
+            res += 1 << i;
+        }
+    }
+
+    return res;
 }

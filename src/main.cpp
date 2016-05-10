@@ -3,10 +3,22 @@
 #include <measurement.hpp>
 #include <fstream>
 #include <gnuplot-iostream.hpp>
-
+#include <string>
 
     //***functions***
     //
+
+vec input_state(char* input,Hamiltonian* h){
+    int N = h->get_system_size();
+    REP_TYPE state=string_to_state(input,N);
+    cout <<"state is: "<<endl;
+    print_bits(state,N);
+    int pos =h->find_state(state);
+    vec res=vec(zeros(h->get_dim()));
+    res(pos)=1;
+    return res;
+}
+
 vec init_right_up(Hamiltonian* h){ //returns initial state vector with all spins up on the right
     REP_TYPE state=0;
     int n=((h->get_system_size())+(h->get_magnetization()))/2;
@@ -283,9 +295,18 @@ int main()
     testHam.set_ham(0.5,0); // mu=0.5,Lambda=0.5
     cout <<endl<<"<><><><><><><><><><><><><><><><>Diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
     testHam.diagonalize();
-    plot_lochschmidt_echo(testHam,0.05,50);  //(ham,dt,T)
-    plot_sz(&testHam,0.05,50);
-    plot_szsz_n(&testHam,1,0.05,50); //(ham,n,dt,T)
+    //plot_lochschmidt_echo(testHam,0.05,50);  //(ham,dt,T)
+    //plot_sz(&testHam,0.05,50);
+    //plot_szsz_n(&testHam,1,0.05,50); //(ham,n,dt,T)
+    
+    char test[testHam.get_system_size()];
+    cout << "insert initial state:"<<endl;
+    cin.ignore();
+    cin.getline(test,testHam.get_system_size());
+    vec state=input_state(test,&testHam);
+    cout <<"vector is: "<<endl;
+    cout << state <<endl;
+
     
     return 0;
 }

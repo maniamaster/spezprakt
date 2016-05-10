@@ -89,4 +89,6 @@ void print_bits(REP_TYPE n, int N);
 
 void *extend_memory(void** ptr, int* oldSize, int extensionSize, int elem_size);
 
+REP_TYPE string_to_state(char* str, int N);
+
 #endif
