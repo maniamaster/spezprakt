@@ -169,7 +169,7 @@ int get_sz(REP_TYPE n, int i, int N) {
 
     n = n >> i;
 
-    return 2 * (i & 1) - 1;
+    return 2 * (n & 1) - 1;
 }
 
 int cnt_smaller_same_magn(REP_TYPE n, int N) {
@@ -277,7 +277,7 @@ REP_TYPE string_to_state(char* str, int N) {
 
     for(i = 0; i < N; i++) {
         if(str[i] == '1') {
-            res += 1 << i;
+            res += 1 << (N-i-1);
         }
     }
 

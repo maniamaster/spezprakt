@@ -302,7 +302,8 @@ int main()
     char test[testHam.get_system_size()];
     cout << "insert initial state:"<<endl;
     cin.ignore();
-    cin.getline(test,testHam.get_system_size());
+    cin.getline(test,testHam.get_system_size()+1);
+    cout <<"cin test:" << test <<endl;
     vec state=input_state(test,&testHam);
     cout <<"vector is: "<<endl;
     cout << state <<endl;
