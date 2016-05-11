@@ -163,13 +163,13 @@ REP_TYPE get_section(REP_TYPE n, int i, int j, int N) {
     return res;
 }
 
-//Returns value of bit i
+//Returns value of bit i (-1 or 1) counted from righthand side starting at 0.
 int get_sz(REP_TYPE n, int i, int N) {
-    i = i % N;
+    i = i  % N ;
 
     n = n >> i;
 
-    return 2 * (n & 1) - 1;
+    return 2 * (n & 1) -1;
 }
 
 int cnt_smaller_same_magn(REP_TYPE n, int N) {

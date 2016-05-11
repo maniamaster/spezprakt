@@ -91,4 +91,5 @@ void *extend_memory(void** ptr, int* oldSize, int extensionSize, int elem_size);
 
 REP_TYPE string_to_state(char* str, int N);
 
+int get_sz(REP_TYPE n, int i, int N); //returns value of bit i
 #endif

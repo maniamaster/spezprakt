@@ -103,7 +103,7 @@ void plot_sz(Hamiltonian* h,double dt,double T){
     myfile.open("sz.dat");
     Measurement testMes(h);
     Timeevolver testTime(h);
-    for (int i=1;i<=N;i++)
+    for (int i=0;i<N;i++)
         myfile <<testMes.sz_i(state,i)<<"\t";
     myfile<<endl;
     sz <<"reset"<<endl;
@@ -116,7 +116,7 @@ void plot_sz(Hamiltonian* h,double dt,double T){
     while (t<T){
         testTime.time_fw(&state,dt);
         t=t+dt;
-        for (int i=1;i<=N;i++)
+        for (int i=0;i<N;i++)
             myfile << testMes.sz_i(state,i)<<"\t";
         myfile << endl;
     }
@@ -137,10 +137,8 @@ void plot_szsz_n(Hamiltonian* h,int n,double dt, double T){
     myfile.open("szsz_n.dat");
     Measurement testMes(h);
     Timeevolver testTime(h);
-    int k=0;
-    for (int i=1;i<=N;i++){
-         k=(i+n-1)%N+1;
-         myfile <<testMes.sz_i(state,i)*testMes.sz_i(state,k)<<"\t";
+    for (int i=0;i<N;i++){
+        myfile <<testMes.sz_i_sz_in(state,i,n)<<"\t";
     }
     myfile<<endl;
     szsz_n <<"reset"<<endl;
@@ -153,11 +151,9 @@ void plot_szsz_n(Hamiltonian* h,int n,double dt, double T){
     while (t<T){
         testTime.time_fw(&state,dt);
         t=t+dt;
-        for (int i=1;i<=N;i++){
-            k=(i+n-1)%N+1;
-            myfile <<testMes.sz_i(state,i)*testMes.sz_i(state,k)<<"\t";
+        for (int i=0;i<N;i++){
+            myfile <<testMes.sz_i_sz_in(state,i,n)<<"\t";
         }
-
         myfile << endl;
     }
     szsz_n <<"p 'szsz_n.dat' matrix with image" <<endl;
@@ -258,7 +254,7 @@ int main()
     myfile.open("test.dat");
     
     //Test der Messung einzelner Spins:
-    Measurement testMes(&testHam);
+    Measurement testMes(&testHam
     cout << "Measurement of Sz_i before time translation:" <<endl; 
     for (int i=1;i<=testHam.get_system_size();i++)
        cout <<"S_"<<i<<" : "<<testMes.sz_i(&state,i)<<endl; 
@@ -292,12 +288,12 @@ int main()
     plot_lochschmidt_echo();
    */ 
     
-    testHam.set_ham(0.5,0); // mu=0.5,Lambda=0.5
+    testHam.set_ham(0.3,0); // mu=0.5,Lambda=0.5
     cout <<endl<<"<><><><><><><><><><><><><><><><>Diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
     testHam.diagonalize();
     //plot_lochschmidt_echo(testHam,0.05,50);  //(ham,dt,T)
-    //plot_sz(&testHam,0.05,50);
-    //plot_szsz_n(&testHam,1,0.05,50); //(ham,n,dt,T)
+    plot_sz(&testHam,0.05,10);
+    plot_szsz_n(&testHam,1,0.05,10); //(ham,n,dt,T)
     
     char test[testHam.get_system_size()];
     cout << "insert initial state:"<<endl;
@@ -307,7 +303,13 @@ int main()
     vec state=input_state(test,&testHam);
     cout <<"vector is: "<<endl;
     cout << state <<endl;
-
+    int i=0;
+    for (;;){
+        cout << "enter component:"<<endl;
+        cin.ignore();
+        cin >> i;
+        cout << i<<" th spin is "<<get_sz(string_to_state(test,testHam.get_system_size()),i,testHam.get_system_size())*1/2.<<endl;
+    }
     
     return 0;
 }
