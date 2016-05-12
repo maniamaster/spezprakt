@@ -13,6 +13,7 @@ Hamiltonian::Hamiltonian(int N,int m){
 
 void Hamiltonian::set_ham(double mu,double lambda){
     _lambda=lambda;
+    _mu=mu;
     int j=0; 
     int k=0;
     int b=0; //position of flipped state
@@ -21,20 +22,20 @@ void Hamiltonian::set_ham(double mu,double lambda){
         for (int i=0;i<_N;i++){
             j=(i+1)%_N;
             if (compare_bits(_list[a],i,_list[a],j,_N)){
-                _ham(a,a)+=mu*double(1/4.);
+                _ham(a,a)+=_mu*double(1/4.);
             }
             else{
-                _ham(a,a)-=mu*double(1/4.);
+                _ham(a,a)-=_mu*double(1/4.);
                 flipstate=swap_bits(_list[a],_N,i,j);
                 b=find_state(flipstate);
                 _ham(a,b)+=double(1/2.);
             }
             k=(i+2)%_N;
             if (compare_bits(_list[a],i,_list[a],k,_N)){
-                _ham(a,a)+=_lambda*mu*double(1/4.);
+                _ham(a,a)+=_lambda*_mu*double(1/4.);
             }
             else{
-                _ham(a,a)-=_lambda*mu*double(1/4.);
+                _ham(a,a)-=_lambda*_mu*double(1/4.);
                 flipstate=swap_bits(_list[a],_N,i,k);
                 b=find_state(flipstate);
                 _ham(a,b)+=_lambda*double(1/2.);
@@ -130,3 +131,20 @@ bool Hamiltonian::get_diagonalized(){
     return _diagonalized;
 }
 
+double Hamiltonian::get_lambda(){
+    return _lambda;
+}
+
+double Hamiltonian::get_mu(){
+    return _mu;
+}
+
+ostream& operator<<(ostream& os, const Hamiltonian& h){
+    os <<"# mu="<< h._mu <<endl;
+    os <<"# lamb="<< h._lambda <<endl;
+    os <<"# N="<< h._N <<endl;
+    os <<"# m="<< h._m <<endl;
+    os <<"# dim="<< h._dim <<endl;
+    return os;
+    
+}
