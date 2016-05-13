@@ -36,7 +36,7 @@ cx_vec init_right_up(Hamiltonian* h){ //returns initial state vector with all sp
 }
 
 void plot_lochschmidt_echo(Hamiltonian *h,cx_vec state,double dt,double T){
-    Gnuplot loch1;
+    Gnuplot gp;
     state=h->nat_2_eigen(state); //in eigenbasis transformieren
     cx_vec state_0=state;
 
@@ -44,8 +44,8 @@ void plot_lochschmidt_echo(Hamiltonian *h,cx_vec state,double dt,double T){
 
     myfile.open("loch1.dat");
     myfile << *h;
-    myfile << "#T="<<T<<endl;
-    myfile << "#dt="<<dt<<endl;
+    myfile << "# T="<<T<<endl;
+    myfile << "# dt="<<dt<<endl;
     
     //time translation:
     cout <<endl<<"<><><><><><><><><><><><><><><><>Zeitentwicklung<><><><><><><><><><><><><><><>"<<endl<<endl;
@@ -63,14 +63,14 @@ void plot_lochschmidt_echo(Hamiltonian *h,cx_vec state,double dt,double T){
     myfile.close();
  
     //Gnulot Skript test:
-    loch1 <<"reset"<<endl;
-    loch1 <<"set term eps"<<endl;
-    loch1 <<"set output \"loch1.eps\""<<endl;
-    loch1 <<"set samples 2000"<<endl;
-    loch1 <<"set linetype 10"<<endl;
-    loch1 <<"set xrange [0:"<<T<<"]"<<endl;
-    loch1 <<"p \"loch1.dat\" u 1:2  with lines lc rgb \"red\"  "<<endl;
-    loch1 <<"set output"<<endl;
+    gp <<"reset"<<endl;
+    gp <<"set term eps"<<endl;
+    gp <<"set output \"loch1.eps\""<<endl;
+    gp <<"set samples 2000"<<endl;
+    gp <<"set linetype 10"<<endl;
+    gp <<"set xrange [0:"<<T<<"]"<<endl;
+    gp <<"p \"loch1.dat\" u 1:2  with lines lc rgb \"red\"  "<<endl;
+    gp <<"set output"<<endl;
 
 }
 
@@ -78,7 +78,6 @@ void plot_sz(Hamiltonian* h,cx_vec state,double dt,double T){
     int N=h->get_system_size();
     Gnuplot gp;
     state=h->nat_2_eigen(state); //in eigenbasis transformieren
-    cx_vec state_0=state;
     ofstream myfile;
     stringstream str;
     str <<"sz_N-"<< N <<"_m-"<<h->get_magnetization()<<"_l-"<<h->get_lambda()<<"_mu-"<<h->get_mu()<<"_dt-"<<dt<<"_T-"<<T<<".dat";
@@ -89,8 +88,9 @@ void plot_sz(Hamiltonian* h,cx_vec state,double dt,double T){
     Timeevolver testTime(h);
 
     myfile << *h;
-    myfile << "#T="<<T<<endl;
-    myfile << "#dt="<<dt<<endl;
+    myfile << "# T="<<T<<endl;
+    myfile << "# dt="<<dt<<endl;
+    myfile << endl << "#<S_z>"<<endl;
 
     for (int i=0;i<N;i++)
         myfile <<testMes.sz_i(state,i)<<"\t";
@@ -123,7 +123,6 @@ void plot_szsz_n(Hamiltonian* h,cx_vec state,int n,double dt, double T){
     int N=h->get_system_size();
     Gnuplot gp;
     state=h->nat_2_eigen(state); //in eigenbasis transformieren
-    cx_vec state_0=state;
     ofstream myfile;
     stringstream str;
     str <<"sz_"<<n<<"_N-"<< N <<"_m-"<<h->get_magnetization()<<"_l-"<<h->get_lambda()<<"_mu-"<<h->get_mu()<<"_dt-"<<dt<<"_T-"<<T<<".dat";
@@ -134,8 +133,10 @@ void plot_szsz_n(Hamiltonian* h,cx_vec state,int n,double dt, double T){
     Timeevolver testTime(h);
 
     myfile << *h;
-    myfile << "#T="<<T<<endl;
-    myfile << "#dt="<<dt<<endl;
+    myfile << "# T="<<T<<endl;
+    myfile << "# dt="<<dt<<endl;
+    myfile << "# n="<<n<<endl;
+    myfile << endl << "#<S_z*S_z+n>"<<endl;
 
     for (int i=0;i<N;i++){
         myfile <<testMes.sz_i_sz_in(state,i,n)<<"\t";
@@ -167,6 +168,44 @@ void plot_szsz_n(Hamiltonian* h,cx_vec state,int n,double dt, double T){
     gp <<"set output"<<endl;  
     myfile.close(); 
 }
+
+void plot_kurz(Hamiltonian* h,cx_vec state,double dt, double T){
+    Gnuplot gp;
+    int N=h->get_system_size();
+    state=h->nat_2_eigen(state); //in eigenbasis transformieren
+    ofstream myfile;
+    myfile.open("kurzzeit.dat");
+    Measurement testMes(h);
+    Timeevolver testTime(h);
+    myfile << *h;
+    myfile <<"# T="<<T<<endl;
+    myfile <<"# dt="<<dt<<endl;
+    myfile << endl << "# t \t <S_z,1>"<<endl;
+    cout <<endl<<"<><><><><><><><><><><><><><><><>Zeitentwicklung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    double t=0;
+    double res=0;
+    res = testMes.sz_i(state,1);
+    myfile << t << "\t" << res << endl; 
+    while (t<T){
+        testTime.time_fw(&state,dt);
+        t=t+dt;
+        res = testMes.sz_i(state,1);
+        myfile << t << "\t" << res << endl;
+    }
+    gp <<"reset"<<endl;
+    gp <<"set term eps"<<endl;
+    gp <<"set output \"kurzzeit2.eps\""<<endl;
+    gp <<"set samples 2000"<<endl;
+    gp <<"set linetype 10"<<endl;
+    gp <<"set xrange [0:"<<T<<"]"<<endl;
+    gp <<"set yrange [-1:1]"<<endl;
+    gp <<"f(x)=-0.5+0.5*x**2"<<endl;
+    gp <<"p \"kurzzeit.dat\" u 1:2  with lines lc rgb \"red\",f(x)  "<<endl;
+    gp <<"set output"<<endl;
+    myfile.close();
+}
+    
+  
 //============================================================================================================
 int main()
 {
@@ -219,7 +258,8 @@ int main()
     cx_vec state=input_state(test,&testHam);
     cout <<"vector is: "<<endl;
     cout << state <<endl;
-    
+
+    plot_kurz(&testHam,state,0.001,5);
     plot_lochschmidt_echo(&testHam,state,0.001,10);  //(ham,dt,T)
     plot_sz(&testHam,state,0.01,10);
     plot_szsz_n(&testHam,state,1,0.01,10); //(ham,n,dt,T)
