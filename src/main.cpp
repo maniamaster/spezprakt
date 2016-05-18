@@ -143,7 +143,7 @@ void plot_szsz_n(Hamiltonian* h,cx_vec state,int n,double dt, double T){
     }
     myfile<<endl;
     gp <<"reset"<<endl;
-    gp <<"set term eps"<<endl;
+    gp <<"set term eps size 4in, 8in"<<endl;
     gp <<"set output '"<<str2.str()<<"'"<<endl;
     gp <<"set noborder"<<endl;
     gp <<"set noborder"<<endl;
@@ -200,7 +200,8 @@ void plot_kurz(Hamiltonian* h,cx_vec state,double dt, double T){
     gp <<"set xrange [0:"<<T<<"]"<<endl;
     gp <<"set yrange [-1:1]"<<endl;
     gp <<"f(x)=-0.5+0.5*x**2"<<endl;
-    gp <<"p \"kurzzeit.dat\" u 1:2  with lines lc rgb \"red\",f(x)  "<<endl;
+    
+    gp <<"p \"kurzzeit.dat\" u 1:2  with lines lc rgb \"red\",f(x),-0.5*besj0(2*x)"<<endl;
     gp <<"set output"<<endl;
     myfile.close();
 }
@@ -259,10 +260,10 @@ int main()
     cout <<"vector is: "<<endl;
     cout << state <<endl;
 
-    plot_kurz(&testHam,state,0.001,5);
-    plot_lochschmidt_echo(&testHam,state,0.001,10);  //(ham,dt,T)
-    plot_sz(&testHam,state,0.01,10);
-    plot_szsz_n(&testHam,state,1,0.01,10); //(ham,n,dt,T)
+    plot_kurz(&testHam,state,0.1,5);
+    plot_lochschmidt_echo(&testHam,state,0.01,10);  //(ham,dt,T)
+    plot_sz(&testHam,state,0.1,10);
+    plot_szsz_n(&testHam,state,1,0.1,10); //(ham,n,dt,T)
 
   /*int i=0;
     for (;;){
