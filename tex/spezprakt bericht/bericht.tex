@@ -71,6 +71,8 @@
 
 \usepackage{cleveref}
 \usepackage{bm}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
 
 \newcommand{\vect}[1]{\bm{#1}}
 \renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
@@ -284,23 +286,24 @@ Text\dots
 Text\dots
 
 \chapter{``Lab course''}
-\section{Introduction, exact diagonalization}
+\section{Theoretical foundation and numerical methods}
+\subsection{Introduction, exact diagonalization}
 In what follows, we are interested in a one-dimensional XXZ Heisenberg chain with next-nearest neighbour coupling. As such, we consider the following Hamiltonian:
 \begin{align}
     H(J,\mu)&=H_1(J,\mu)+\lambda H_2(J,\mu),\\
-    H_s(J,\mu)&=J \sum_{i=1}^{N}\left[\frac{1}{2}\left( S_i^+ S_{i+s}^- + S_i^- S_{s+i}^+ \right)+\mu S_i^z S_{s+i}^z\right],
-    \label{XXZham}
+    H_n(J,\mu)&=J \sum_{i=1}^{N}\left[\frac{1}{2}\left( S_i^+ S_{i+n}^- + S_i^- S_{i+n}^+ \right)+\mu S_i^z S_{i+n}^z\right],
+    \label{eq:XXZham}
 \end{align}
 where the spins are labeled $i=1,\dots,N$ and $J$ is the interaction constant. The scalar product for the spin operators $\mathbf{S}_i\cdot\mathbf{S}_{i+n}$ has been decomposed into creation-annihilation operators $S^\pm=S^x \pm i S^y$ while  $\mu$ introduces an anisotropy for the z-direction compared to the x and y directions.
 Finally, $\lambda$ is a parameter controlling the strength of the next-nearest neighbor (NNN) interactions cf. \cite[4ff.]{xxz_springer}.\\
 First, would like to numerically compute the time evolution of such a system by means of exact diagonalization.
-\section{Block diagonalization}
+\subsection{Block diagonalization}
 In the following, techniques and notation from \cite[55ff.]{sand11} are used.
 The states are denoted as $\ket{S_0^z,S_1^z,\dots,S_{N-1}}$, where the subscript $i=0,\dots,N-1$ refers to the site i of our one-dimensional chain. A particular state is abridgedly labeled by arrows, e.g.
 $\ket{\uparrow\downarrow\uparrow\downarrow\dots}$.
 Furthermore, periodic boundary conditions, which are useful for the construction of symmetries but not needed, are assumed ($i=N-1+n\equiv n-1\label{eq:periodic}$).
 Exact diagonalization allows for total knowledge of the system by choosing a basis, setting up a hamiltonian and diagonalizing it numerically. While theoretically applicable to any system size, this method is limited to around 30 spins, as the computational cost for diagonalization is $\propto 8^\text{dim. of basis}$[citation needed.] and, without utilizing symmetries, the spin basis above grows like $2^N$.\\
-Symmetries can be used to transform the hamiltonian matrix into block-diagonal form cf. \cite[56]{sand11} with each block belonging to states with a conserved quantum number, thereby reducing the basis dimension. In this first chapter, only the conservation of z-component of the total spin ($\hat{=}$ total magnetization) $S^z=\sum_{i=0}^{N-1} S_i^z$ is used:\\
+Symmetries can be used to transform the hamiltonian matrix into block-diagonal form cf. \cite[56]{sand11} with each block belonging to states with a conserved quantum number, thereby reducing the basis dimension. In this first chapter, only the conservation of z-component of the total spin ($\hat{=}$ total magnetization) $m^z=\sum_{i=0}^{N-1} S_i^z$ is used:\\
 It is easy to verify, using the normal commutation relations for the spin operators [citation needed] that
 \begin{align}
     [S_i^z,H]&=\frac{1}{2}(A_1+A_2),\\
@@ -314,11 +317,59 @@ By using the periodic boundary conditions it follows that
 \end{align}
 and therefore
 \begin{align}
-    \left[H,S^z\right]=0,
+    \left[H,m^z\right]=0,
     \label{eq:totalmagcomm}
 \end{align}
-meaning that $S^z$ is a conserved quantity. By constructing a basis with fixed magnetization, blocks with the same $S^z$ can be diagonalized independentlymeaning that $S^z$ is a conserved quantity. By constructing a basis with fixed magnetization, blocks with the same $S^z$ can be diagonalized independently..
+meaning that $m^z$ is a conserved quantity. By constructing a basis with fixed magnetization, blocks with the same $S^z$ can be diagonalized independently, meaning that $S^z$ is a conserved quantity. By constructing a basis with fixed magnetization, blocks with the same $S^z$ can be considered independently.
 
+\subsection{Bit representation}
+As Spin-$1/2$ partlicles only have two possible states $(\uparrow \& \downarrow)$, they can be elegantly represented in a computer via the bits ``1'' and ``0''.
+More precisely, A lattice state $\ket{S_0^z,S_1^z,\dots,S_{N-1}}$ is represented as the bit representation of an unsigned integer, with the first bit denoted by the index 0. \cite[59]{sand11}, e.g. $\ket{\uparrow\downarrow\downarrow\uparrow}\hat{=} ~1001~ \dot{=}~9$. Symmetries that will come in later, like spin translation or rotation manifest themselves as operations on these bit representations.\\
+
+\subsection{Construction of the fixed magnetization basis}
+A Basis list of states having the same magnetization $m_z$ is found by iterating over all integers $s$ from the $2^n$ dimensional basis and counting the amount of ``1'' bits $n_\uparrow$, checking whether they amount to the target magnetization $m_z$=$n_\uparrow-1/2$.\\
+With $s[i]$ labeling the $i$'th bit, starting from 0, the following pseudocode is used to obtain an ordered list of basis states $s_a$:
+
+\begin{algorithmic}
+    \State $a=0$
+    \ForAll{$s=0..2^N-1$}
+    \If{$\sum_i s[i]=n_\uparrow$}
+        \State$ a \gets a+1$
+        \State$s_a \gets s$
+        \EndIf
+    \EndFor
+    \State $M\gets a$
+\end{algorithmic}\label{pseudo:basismag}
+$M$ is the basis dimension. Thus, a natural basis is given by all vectors 
+\begin{align}
+    \ket{a}=\hat{e}_a=(0,\dots,0,\underbrace{1}_{a},0,\dots,0)^T, a=1..M,     \label{eq:basismag}
+\end{align}
+each representing the corresponding integer state $s_a$.
+
+\subsection{Construction of the hamilton matrix}
+The hamiltonian (\ref{eq:XXZham}) is translated into a matrix for the fixed magnetization basis cf. \cite[60f.]{sand11}.
+The diagonal terms are $\braket{a|S_i^z S_{i+n}^z|a}=\pm1/4~\mu$ ,since the $i$'th and $i+n$'th spin are either equal or different.
+The off-diagonal terms $\left( S_i^+ S_{i+n}^- + S_i^- S_{i+n}^+ \right)$ flip the bits $i$ and $i+n$ $(0\leftrightarrow1)$ and amount to zero otherwise.
+A bisectional search [Pseudocode?] is used to find position $b$ of the flipped state $s*$, giving a matrix element contribution of $\braket{b|( S_i^+ S_{i+n}^- + S_i^- S_{i+n}^+ )|a}=+1/2$.
+In pseudocode, the matrix belonging to the NNN hamiltonian ($n=1,2$) is constructed as follows:
+\begin{algorithmic}
+    \For{$a=1..M$}
+    \For{$n=1,2$}
+    \State $j=(i+n)\mod N$
+    \State \If{$a[i]=a[j]$}
+    \State $H(a,a)\gets H(a,a)+\frac{1}{4}~\mu$
+    \Else
+    \State $H(a,a)\gets H(a,a)-\frac{1}{4}~\mu$
+    \State $s*=\text{flipstate}(a)$
+    \State $b\gets$ findstate($s*$)
+    \State $H(a,b)=\frac{1}{2}$
+    \EndIf
+    \EndFor
+    \EndFor
+\end{algorithmic}
+
+\subsection{Diagonalization and time evolution}
+The Armadillo package \cite{Armadillo} is used for matrix diagonalization and vector operations.
 
 
 
@@ -327,10 +378,7 @@ meaning that $S^z$ is a conserved quantity. By constructing a basis with fixed m
 
 
 \chapter{Ergebnisse}
-Text\dots
-``wewewewewewewe''
-Dies ist eine Formel $x=y^2$\\
-toll, was ?\\
+Test\dots
 citation: \cite{sand11}
 F5 - Test:\\
 \begin{align}
