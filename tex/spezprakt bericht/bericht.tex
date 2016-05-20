@@ -303,7 +303,7 @@ The states are denoted as $\ket{S_0^z,S_1^z,\dots,S_{N-1}}$, where the subscript
 $\ket{\uparrow\downarrow\uparrow\downarrow\dots}$.
 Furthermore, periodic boundary conditions, which are useful for the construction of symmetries but not needed, are assumed ($i=N-1+n\equiv n-1\label{eq:periodic}$).
 Exact diagonalization allows for total knowledge of the system by choosing a basis, setting up a hamiltonian and diagonalizing it numerically. While theoretically applicable to any system size, this method is limited to around 30 spins, as the computational cost for diagonalization is $\propto 8^\text{dim. of basis}$[citation needed.] and, without utilizing symmetries, the spin basis above grows like $2^N$.\\
-Symmetries can be used to transform the hamiltonian matrix into block-diagonal form cf. \cite[56]{sand11} with each block belonging to states with a conserved quantum number, thereby reducing the basis dimension. In this first chapter, only the conservation of z-component of the total spin ($\hat{=}$ total magnetization) $m^z=\sum_{i=0}^{N-1} S_i^z$ is used:\\
+Symmetries can be used to transform the hamiltonian matrix into block-diagonal form cf. \cite[56]{sand11} with each block belonging to states with a conserved quantum number, thereby reducing the basis dimension. In this first chapter, only the conservation of z-component of the total spin ($\hat{=}$ total magnetization) $m_z=\sum_{i=0}^{N-1} S_i^z$ is used:\\
 It is easy to verify, using the normal commutation relations for the spin operators [citation needed] that
 \begin{align}
     [S_i^z,H]&=\frac{1}{2}(A_1+A_2),\\
@@ -317,10 +317,10 @@ By using the periodic boundary conditions it follows that
 \end{align}
 and therefore
 \begin{align}
-    \left[H,m^z\right]=0,
+    \left[H,m_z\right]=0,
     \label{eq:totalmagcomm}
 \end{align}
-meaning that $m^z$ is a conserved quantity. By constructing a basis with fixed magnetization, blocks with the same $S^z$ can be diagonalized independently, meaning that $S^z$ is a conserved quantity. By constructing a basis with fixed magnetization, blocks with the same $S^z$ can be considered independently.
+meaning that $m_z$ is a conserved quantity. By constructing a basis with fixed magnetization, blocks with the same $m_z$ can be considered independently.
 
 \subsection{Bit representation}
 As Spin-$1/2$ partlicles only have two possible states $(\uparrow \& \downarrow)$, they can be elegantly represented in a computer via the bits ``1'' and ``0''.
@@ -342,7 +342,7 @@ With $s[i]$ labeling the $i$'th bit, starting from 0, the following pseudocode i
 \end{algorithmic}\label{pseudo:basismag}
 $M$ is the basis dimension. Thus, a natural basis is given by all vectors 
 \begin{align}
-    \ket{a}=\hat{e}_a=(0,\dots,0,\underbrace{1}_{a},0,\dots,0)^T, a=1..M,     \label{eq:basismag}
+    \hat{e}_a=(0,\dots,0,\underbrace{1}_{c_a},0,\dots,0)^T, a=1..M,     \label{eq:basismag}
 \end{align}
 each representing the corresponding integer state $s_a$.
 
@@ -370,11 +370,41 @@ In pseudocode, the matrix belonging to the NNN hamiltonian ($n=1,2$) is construc
 
 \subsection{Diagonalization and time evolution}
 The Armadillo package \cite{Armadillo} is used for matrix diagonalization and vector operations.
-
-
-
-
-
+After setting up the Hamilton matrix, the eigenvectors and eigenvalues are computed. Each eigenstate $\ket{\lambda}$ is a superposition of the physical spin states $\ket{a}$ , which themselves are represented by the bits of an integer. The vectors $\mathbf{c}$, which represent the states and have components $c_a$, are to be transformed into the eigenbasis. A general initial state $\psi$ is decomposed in the eigenbasis as follows:
+\begin{align}
+    H\ket{\psi}&=\sum_a\sum_b \ket{a}\underbrace{\braket{a|H|b}}_{H_{ab}} \underbrace{\braket{b|\psi}}_{c_b}=\sum_a\sum_b\sum_\lambda  \ket{a}\braket{a|\lambda|\lambda}\braket{\lambda|b}\braket{b|\psi}\nonumber\\
+    &=\sum_\lambda \lambda\ket{\lambda}\underbrace{\braket{\lambda|\psi}}_{c_\lambda},
+    \label{eq:eigendecomposition}
+\end{align}
+where $c_\lambda$ are the components of the vector $\mathbf{c}$ in the eigenbasis and $\lambda$ are the eigenvalues (energies). The matrix elements and vectors are what are actually worked with. The physical spin states remain untouched.\\
+We would now like to compute the time evolution of the system, which is done in the eigenbasis. Utilizing the time evolution operator $U(t)=e^{-iHt}$ it holds that
+\begin{align}
+    e^{-iHt}\ket{\psi}=e^{-iHt}\sum_\lambda c_\lambda\ket{\lambda}=\sum_\lambda \underbrace{e^{-i\lambda t}c_\lambda}_{c_\lambda (t)}\ket{\lambda}.
+    \label{eq:timeevolution}
+\end{align}
+\subsection{Measurements and observables}
+In light of the statistical nature of quantum mechanics, we are interested in measuring the expectation value of an observable $\braket{O}$.
+Another important quantity later on will be the Loschmidt echo $M$ \cite{loschmidt_scolarpedia}, which is generally defined as
+\begin{align}
+    M(t)=\left|\braket{\psi_0|e^{iH_2 t} e^{-iH_1 t}|\psi_0}\right|.
+    \label{eq:loschmidt_general}
+\end{align}
+For the first test of the time evolution, the special case with $H_2=0$ is considered, which makes $M$ into a measure of similarity with the initial state.\\
+The Loschmidt echo is most easily computed in the eigenbasis, since it is not dependent on the basis used, and the eigenbasis is utilized for time evolution, anyway.
+In the matrix picture:
+\begin{align}
+    \braket{\psi_0|e^{-iHt}|\psi_0}=\sum_\lambda\braket{\lambda|c_\lambda^* e^{-i\lambda t} c_\lambda|\lambda}=\sum_\lambda c_\lambda^*(0) c_\lambda(t)=\mathbf{c}^*(0)\cdot \mathbf{c}(t).
+    \label{eq:loschmidt_initial}
+\end{align}
+For the expectation values, the state vector has to be transformed back into the natural basis because access to the physical spin states is needed.
+For example, measurement of $\braket{S_i^z}$ is done as follows: For the state vector $\mathbf{c}$ in the natural basis, every state represented by each component like in \cref{eq:basismag} is iterated over and the spin state ($\hat{=}$ bit ) of the $i$'th component of the integer $s_a$ is read out.
+The expectation value is then
+\begin{align}
+    \braket{S_i^z}_t=\sum_{a,b}c_a^*(t)\braket{a|S_i^z|b}c_a(t)=\sum_a |c_a(t)|^2 S_i^z,
+    \label{eq:sz_i_exp}
+\end{align}
+since the operator $S_i^z$ is diagonal in the natural basis.
+Analogously, the spin-spin correlation operator $S_i^z S_{i+n}^z$ is handled.
 
 
 \chapter{Ergebnisse}
