@@ -170,11 +170,16 @@ void plot_szsz_n(Hamiltonian* h,cx_vec state,int n,double dt, double T){
 }
 
 void plot_kurz(Hamiltonian* h,cx_vec state,double dt, double T){
-    Gnuplot gp;
+    //Gnuplot gp;
     int N=h->get_system_size();
     state=h->nat_2_eigen(state); //in eigenbasis transformieren
     ofstream myfile;
-    myfile.open("kurzzeit.dat");
+    stringstream str;
+    if (N<10)
+        str <<"kurzzeit_0"<<N<<".dat";
+    else
+        str <<"kurzzeit_"<<N<<".dat";
+    myfile.open(str.str().c_str());
     Measurement testMes(h);
     Timeevolver testTime(h);
     myfile << *h;
@@ -192,9 +197,10 @@ void plot_kurz(Hamiltonian* h,cx_vec state,double dt, double T){
         res = testMes.sz_i(state,1);
         myfile << t << "\t" << res << endl;
     }
+    /*
     gp <<"reset"<<endl;
     gp <<"set term eps"<<endl;
-    gp <<"set output \"kurzzeit2.eps\""<<endl;
+    gp <<"set output \"kurzzeit.eps\""<<endl;
     gp <<"set samples 2000"<<endl;
     gp <<"set linetype 10"<<endl;
     gp <<"set xrange [0:"<<T<<"]"<<endl;
@@ -203,6 +209,7 @@ void plot_kurz(Hamiltonian* h,cx_vec state,double dt, double T){
     
     gp <<"p \"kurzzeit.dat\" u 1:2  with lines lc rgb \"red\",f(x),-0.5*besj0(2*x)"<<endl;
     gp <<"set output"<<endl;
+    */
     myfile.close();
 }
     
@@ -250,6 +257,8 @@ int main()
     testHam.set_ham(0.3,0); // mu=0.5,Lambda=0.5
     cout <<endl<<"<><><><><><><><><><><><><><><><>Diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
     testHam.diagonalize();
+    //testHam.print_hamiltonian();
+    //testHam.print_diagonal();
 
     
     char test[testHam.get_system_size()];
@@ -260,10 +269,10 @@ int main()
     cout <<"vector is: "<<endl;
     cout << state <<endl;
 
-    plot_kurz(&testHam,state,0.1,5);
-    plot_lochschmidt_echo(&testHam,state,0.01,10);  //(ham,dt,T)
-    plot_sz(&testHam,state,0.1,10);
-    plot_szsz_n(&testHam,state,1,0.1,10); //(ham,n,dt,T)
+    plot_kurz(&testHam,state,0.01,10);
+    //plot_lochschmidt_echo(&testHam,state,0.01,10);  //(ham,dt,T)
+    //plot_sz(&testHam,state,0.1,10);
+    //plot_szsz_n(&testHam,state,1,0.1,10); //(ham,n,dt,T)
 
   /*int i=0;
     for (;;){

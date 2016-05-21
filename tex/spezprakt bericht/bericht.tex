@@ -350,18 +350,18 @@ each representing the corresponding integer state $s_a$.
 The hamiltonian (\ref{eq:XXZham}) is translated into a matrix for the fixed magnetization basis cf. \cite[60f.]{sand11}.
 The diagonal terms are $\braket{a|S_i^z S_{i+n}^z|a}=\pm1/4~\mu$ ,since the $i$'th and $i+n$'th spin are either equal or different.
 The off-diagonal terms $\left( S_i^+ S_{i+n}^- + S_i^- S_{i+n}^+ \right)$ flip the bits $i$ and $i+n$ $(0\leftrightarrow1)$ and amount to zero otherwise.
-A bisectional search [Pseudocode?] is used to find position $b$ of the flipped state $s*$, giving a matrix element contribution of $\braket{b|( S_i^+ S_{i+n}^- + S_i^- S_{i+n}^+ )|a}=+1/2$.
+A bisectional search [Pseudocode?] is used to find position $b$ of the flipped state $s^*$, giving a matrix element contribution of $\braket{b|( S_i^+ S_{i+n}^- + S_i^- S_{i+n}^+ )|a}=+1/2$.
 In pseudocode, the matrix belonging to the NNN hamiltonian ($n=1,2$) is constructed as follows:
 \begin{algorithmic}
     \For{$a=1..M$}
     \For{$n=1,2$}
     \State $j=(i+n)\mod N$
-    \State \If{$a[i]=a[j]$}
+    \If{$a[i]=a[j]$}
     \State $H(a,a)\gets H(a,a)+\frac{1}{4}~\mu$
     \Else
     \State $H(a,a)\gets H(a,a)-\frac{1}{4}~\mu$
-    \State $s*=\text{flipstate}(a)$
-    \State $b\gets$ findstate($s*$)
+    \State $s^*=\text{flipstate}(a)$
+    \State $b\gets$ findstate($s^*$)
     \State $H(a,b)=\frac{1}{2}$
     \EndIf
     \EndFor
@@ -370,7 +370,7 @@ In pseudocode, the matrix belonging to the NNN hamiltonian ($n=1,2$) is construc
 
 \subsection{Diagonalization and time evolution}
 The Armadillo package \cite{Armadillo} is used for matrix diagonalization and vector operations.
-After setting up the Hamilton matrix, the eigenvectors and eigenvalues are computed. Each eigenstate $\ket{\lambda}$ is a superposition of the physical spin states $\ket{a}$ , which themselves are represented by the bits of an integer. The vectors $\mathbf{c}$, which represent the states and have components $c_a$, are to be transformed into the eigenbasis. A general initial state $\psi$ is decomposed in the eigenbasis as follows:
+After setting up the Hamilton matrix, the eigenvectors and eigenvalues are computed. Each eigenstate $\ket{\lambda}$ is a superposition of the physical spin states $\ket{a}$ , which themselves are represented by the bits of an integer. The vectors $\mathbf{c}$, which represent the states and have components $c_a$, are to be transformed into the eigenbasis. A general initial state $\ket\psi$ is decomposed in the eigenbasis as follows:
 \begin{align}
     H\ket{\psi}&=\sum_a\sum_b \ket{a}\underbrace{\braket{a|H|b}}_{H_{ab}} \underbrace{\braket{b|\psi}}_{c_b}=\sum_a\sum_b\sum_\lambda  \ket{a}\braket{a|\lambda|\lambda}\braket{\lambda|b}\braket{b|\psi}\nonumber\\
     &=\sum_\lambda \lambda\ket{\lambda}\underbrace{\braket{\lambda|\psi}}_{c_\lambda},
@@ -405,8 +405,36 @@ The expectation value is then
 \end{align}
 since the operator $S_i^z$ is diagonal in the natural basis.
 Analogously, the spin-spin correlation operator $S_i^z S_{i+n}^z$ is handled.
-
-
+\section{Tests of the time evolution}
+We would like to check, whether our time evolution as computed in the previous chapter gives the right results. For this reason, different tests are carried out and compared to theoretical predictions for certain special cases of the dynamics. 
+\subsection{Short-time evolution}
+The goal is to check, whether the computed time evolution is correct up to a small time $t$. 
+We start from the Heisenberg equation of motion
+\begin{align}
+    \frac{\d O_H}{\d t}=i[H,O_H],
+    \label{eq:heisenberg}
+\end{align}
+where $H$ is the hamiltonian and
+\begin{align}
+    O_H(t)=e^{(iHt)}Oe^{(-iHt)}.
+    \label{eq:heisenbergop}
+\end{align}
+The subscript $H$ is dropped in what follows. 
+Using the Baker-Campbell-Hausdorff formula $\text{Ad}_{\exp {iHt}}=\exp{\text{ad}_{iHt}}$ we get
+\begin{align}
+    O(t)\approx O(0)+i[H,O]t-\frac{1}{2}\left[H,[H,O]\right]t^2.
+    \label{eq:shorttime}
+\end{align}
+We consider the XXZ Hamiltonian
+\newpage
+blabalbalbalablablabalbalbalablablabalba
+\begin{figure}[]
+    \centering
+    \input{kurzzeit}
+    \caption{blabla}
+    \label{fig:}
+\end{figure}
+blablabalbla
 \chapter{Ergebnisse}
 Test\dots
 citation: \cite{sand11}

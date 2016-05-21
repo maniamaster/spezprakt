@@ -14,6 +14,8 @@ set style line 6 lc rgb '#92C5DE' #
 set style line 7 lc rgb '#4393C3' # medium blue
 set style line 8 lc rgb '#2166AC' # dark blue
 
+
+
 # palette
 set palette defined ( 0 '#B2182B',\
     	    	      1 '#D6604D',\
