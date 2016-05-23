@@ -298,13 +298,13 @@ where the spins are labeled $i=1,\dots,N$ and $J$ is the interaction constant. T
 Finally, $\lambda$ is a parameter controlling the strength of the next-nearest neighbor (NNN) interactions cf. \cite[4ff.]{xxz_springer}.\\
 First, would like to numerically compute the time evolution of such a system by means of exact diagonalization.
 \subsection{Block diagonalization}
-In the following, techniques and notation from \cite[55ff.]{sand11} are used.
-The states are denoted as $\ket{S_0^z,S_1^z,\dots,S_{N-1}}$, where the subscript $i=0,\dots,N-1$ refers to the site i of our one-dimensional chain. A particular state is abridgedly labeled by arrows, e.g.
+In the following section, we follow closely the techniques and notation from \cite[55ff.]{sand11}.
+The states are denoted as $\ket{S_0^z,S_1^z,\dots,S_{N-1}}$, where the subscript $i=0,\dots,N-1$ refers to the site $i$ of our one-dimensional chain. A particular state is abridgedly labeled by arrows, e.g.
 $\ket{\uparrow\downarrow\uparrow\downarrow\dots}$.
-Furthermore, periodic boundary conditions, which are useful for the construction of symmetries but not needed, are assumed ($i=N-1+n\equiv n-1\label{eq:periodic}$).
-Exact diagonalization allows for total knowledge of the system by choosing a basis, setting up a hamiltonian and diagonalizing it numerically. While theoretically applicable to any system size, this method is limited to around 30 spins, as the computational cost for diagonalization is $\propto 8^\text{dim. of basis}$[citation needed.] and, without utilizing symmetries, the spin basis above grows like $2^N$.\\
-Symmetries can be used to transform the hamiltonian matrix into block-diagonal form cf. \cite[56]{sand11} with each block belonging to states with a conserved quantum number, thereby reducing the basis dimension. In this first chapter, only the conservation of z-component of the total spin ($\hat{=}$ total magnetization) $m_z=\sum_{i=0}^{N-1} S_i^z$ is used:\\
-It is easy to verify, using the normal commutation relations for the spin operators [citation needed] that
+Furthermore, periodic boundary conditions, which add additional symmetries, are assumed ($i=N-1+n\equiv n-1\label{eq:periodic}$).
+Exact diagonalization allows for total knowledge of the properties of a finite system by choosing a basis, setting up a Hamiltonian and diagonalizing it numerically. While theoretically applicable to any system size, this method is limited to around 30 spins, as the computational cost for diagonalization is $\propto 8^\text{dim. of basis}$[citation needed.] and the spin basis above grows like $2^N$ without utilizing symmetries.
+Symmetries can be used to transform the Hamiltonian matrix into block-diagonal form cf. \cite[56]{sand11} with each block belonging to states with a conserved quantum number, thereby reducing the basis dimension. In this first chapter, only the conservation of z-component of the total spin ($\hat{=}$ total magnetization) $m_z=\sum_{i=0}^{N-1} S_i^z$ is used:\\
+It is easy to verify, using the usual commutation relations for the spin operators [citation needed] that
 \begin{align}
     [S_i^z,H]&=\frac{1}{2}(A_1+A_2),\\
     A_n&=S_i^+ S_{i+n}^- -S_i^- S_{i+n}^+ -S_{i-n}^+ S_i^- +S_{i-n}^- S_i^+.
@@ -320,14 +320,18 @@ and therefore
     \left[H,m_z\right]=0,
     \label{eq:totalmagcomm}
 \end{align}
-meaning that $m_z$ is a conserved quantity. By constructing a basis with fixed magnetization, blocks with the same $m_z$ can be considered independently.
+meaning that $m_z$ is a conserved quantity. By constructing a basis with fixed magnetization, blocks of size $M\times M$ with the same $m_z$ can be considered independently. $M$ is the fixed magnetization basis dimension: \cite[60]{sand11}
+
+\begin{align}
+    M=\frac{N!}{n_{\uparrow}!~  n_{\downarrow}!}.     \label{eq:fixedmagdim}
+\end{align}
 
 \subsection{Bit representation}
 As Spin-$1/2$ partlicles only have two possible states $(\uparrow \& \downarrow)$, they can be elegantly represented in a computer via the bits ``1'' and ``0''.
 More precisely, A lattice state $\ket{S_0^z,S_1^z,\dots,S_{N-1}}$ is represented as the bit representation of an unsigned integer, with the first bit denoted by the index 0. \cite[59]{sand11}, e.g. $\ket{\uparrow\downarrow\downarrow\uparrow}\hat{=} ~1001~ \dot{=}~9$. Symmetries that will come in later, like spin translation or rotation manifest themselves as operations on these bit representations.\\
 
 \subsection{Construction of the fixed magnetization basis}
-A Basis list of states having the same magnetization $m_z$ is found by iterating over all integers $s$ from the $2^n$ dimensional basis and counting the amount of ``1'' bits $n_\uparrow$, checking whether they amount to the target magnetization $m_z$=$n_\uparrow-1/2$.\\
+A basis list of states having the same magnetization $m_z$ is found by iterating over all integers $s$ from the $2^n$ dimensional basis and counting the amount of ``1'' bits $n_\uparrow$, checking whether they amount to the target magnetization $m_z$=$n_\uparrow-N/2$.\\
 With $s[i]$ labeling the $i$'th bit, starting from 0, the following pseudocode is used to obtain an ordered list of basis states $s_a$:
 
 \begin{algorithmic}
@@ -340,18 +344,18 @@ With $s[i]$ labeling the $i$'th bit, starting from 0, the following pseudocode i
     \EndFor
     \State $M\gets a$
 \end{algorithmic}\label{pseudo:basismag}
-$M$ is the basis dimension. Thus, a natural basis is given by all vectors 
+$M$ is the basis dimension. Thus, in terms of $M$-tuples, a natural basis is given by all vectors 
 \begin{align}
     \hat{e}_a=(0,\dots,0,\underbrace{1}_{c_a},0,\dots,0)^T, a=1..M,     \label{eq:basismag}
 \end{align}
 each representing the corresponding integer state $s_a$.
 
-\subsection{Construction of the hamilton matrix}
-The hamiltonian (\ref{eq:XXZham}) is translated into a matrix for the fixed magnetization basis cf. \cite[60f.]{sand11}.
+\subsection{Construction of the Hamilton matrix}
+The Hamiltonian (\ref{eq:XXZham}) is translated into a matrix for the fixed magnetization basis cf. \cite[60f.]{sand11}.
 The diagonal terms are $\braket{a|S_i^z S_{i+n}^z|a}=\pm1/4~\mu$ ,since the $i$'th and $i+n$'th spin are either equal or different.
 The off-diagonal terms $\left( S_i^+ S_{i+n}^- + S_i^- S_{i+n}^+ \right)$ flip the bits $i$ and $i+n$ $(0\leftrightarrow1)$ and amount to zero otherwise.
 A bisectional search [Pseudocode?] is used to find position $b$ of the flipped state $s^*$, giving a matrix element contribution of $\braket{b|( S_i^+ S_{i+n}^- + S_i^- S_{i+n}^+ )|a}=+1/2$.
-In pseudocode, the matrix belonging to the NNN hamiltonian ($n=1,2$) is constructed as follows:
+In pseudocode, the matrix belonging to the NNN Hamiltonian ($n=1,2$) is constructed as follows:
 \begin{algorithmic}
     \For{$a=1..M$}
     \For{$n=1,2$}
@@ -370,33 +374,33 @@ In pseudocode, the matrix belonging to the NNN hamiltonian ($n=1,2$) is construc
 
 \subsection{Diagonalization and time evolution}
 The Armadillo package \cite{Armadillo} is used for matrix diagonalization and vector operations.
-After setting up the Hamilton matrix, the eigenvectors and eigenvalues are computed. Each eigenstate $\ket{\lambda}$ is a superposition of the physical spin states $\ket{a}$ , which themselves are represented by the bits of an integer. The vectors $\mathbf{c}$, which represent the states and have components $c_a$, are to be transformed into the eigenbasis. A general initial state $\ket\psi$ is decomposed in the eigenbasis as follows:
+After setting up the Hamilton matrix, the eigenvectors and eigenvalues are computed. Each eigenstate $\ket{\lambda}$ is a superposition of the natural spin states $\ket{a}=\ket{\uparrow\downarrow\uparrow\uparrow\dots\downarrow}$ , which themselves are represented by the bits of an integer. The vectors $\mathbf{c}$, which represent the states and have components $c_a$, are to be transformed into the eigenbasis. A general initial state $\ket\psi$ is decomposed in the eigenbasis as follows:
 \begin{align}
     H\ket{\psi}&=\sum_a\sum_b \ket{a}\underbrace{\braket{a|H|b}}_{H_{ab}} \underbrace{\braket{b|\psi}}_{c_b}=\sum_a\sum_b\sum_\lambda  \ket{a}\braket{a|\lambda|\lambda}\braket{\lambda|b}\braket{b|\psi}\nonumber\\
     &=\sum_\lambda \lambda\ket{\lambda}\underbrace{\braket{\lambda|\psi}}_{c_\lambda},
     \label{eq:eigendecomposition}
 \end{align}
-where $c_\lambda$ are the components of the vector $\mathbf{c}$ in the eigenbasis and $\lambda$ are the eigenvalues (energies). The matrix elements and vectors are what are actually worked with. The physical spin states remain untouched.\\
+where $c_\lambda$ are the components of the vector $\mathbf{c}$ in the eigenbasis and $\lambda$ are the eigenvalues (energies). The matrix elements and column vectors are what we actually work with. The natural spin states remain untouched.\\
 We would now like to compute the time evolution of the system, which is done in the eigenbasis. Utilizing the time evolution operator $U(t)=e^{-iHt}$ it holds that
 \begin{align}
     e^{-iHt}\ket{\psi}=e^{-iHt}\sum_\lambda c_\lambda\ket{\lambda}=\sum_\lambda \underbrace{e^{-i\lambda t}c_\lambda}_{c_\lambda (t)}\ket{\lambda}.
     \label{eq:timeevolution}
 \end{align}
 \subsection{Measurements and observables}
-In light of the statistical nature of quantum mechanics, we are interested in measuring the expectation value of an observable $\braket{O}$.
+In light of the probabilistic nature of quantum mechanics, we are interested in measuring the expectation value of an observable $\braket{O}$.
 Another important quantity later on will be the Loschmidt echo $M$ \cite{loschmidt_scolarpedia}, which is generally defined as
 \begin{align}
     M(t)=\left|\braket{\psi_0|e^{iH_2 t} e^{-iH_1 t}|\psi_0}\right|.
     \label{eq:loschmidt_general}
 \end{align}
-For the first test of the time evolution, the special case with $H_2=0$ is considered, which makes $M$ into a measure of similarity with the initial state.\\
-The Loschmidt echo is most easily computed in the eigenbasis, since it is not dependent on the basis used, and the eigenbasis is utilized for time evolution, anyway.
+For the first test of the time evolution, the special case with $H_2=0$ is considered, which makes $M$ a measure of similarity of the time evolved state with the initial state.\\
+The Loschmidt echo is most easily computed in the eigenbasis, since it is not dependent on the basis used, and the eigenbasis is utilized for time evolution anyway.
 In the matrix picture:
 \begin{align}
     \braket{\psi_0|e^{-iHt}|\psi_0}=\sum_\lambda\braket{\lambda|c_\lambda^* e^{-i\lambda t} c_\lambda|\lambda}=\sum_\lambda c_\lambda^*(0) c_\lambda(t)=\mathbf{c}^*(0)\cdot \mathbf{c}(t).
     \label{eq:loschmidt_initial}
 \end{align}
-For the expectation values, the state vector has to be transformed back into the natural basis because access to the physical spin states is needed.
+For the expectation values of observables, the state vector has to be transformed back into the natural basis because access to the natural spin states is needed in order to evaluate the action of the operators.
 For example, measurement of $\braket{S_i^z}$ is done as follows: For the state vector $\mathbf{c}$ in the natural basis, every state represented by each component like in \cref{eq:basismag} is iterated over and the spin state ($\hat{=}$ bit ) of the $i$'th component of the integer $s_a$ is read out.
 The expectation value is then
 \begin{align}
@@ -414,27 +418,53 @@ We start from the Heisenberg equation of motion
     \frac{\d O_H}{\d t}=i[H,O_H],
     \label{eq:heisenberg}
 \end{align}
-where $H$ is the hamiltonian and
+where $H$ is the Hamiltonian and
 \begin{align}
     O_H(t)=e^{(iHt)}Oe^{(-iHt)}.
     \label{eq:heisenbergop}
 \end{align}
 The subscript $H$ is dropped in what follows. 
-Using the Baker-Campbell-Hausdorff formula $\text{Ad}_{\exp {iHt}}=\exp{\text{ad}_{iHt}}$ we get
+Using the Baker-Campbell-Hausdorff formula $\text{Ad}_{\exp {iHt}}=\exp{\text{ad}_{iHt}}$ and expanding to second order, we get
 \begin{align}
     O(t)\approx O(0)+i[H,O]t-\frac{1}{2}\left[H,[H,O]\right]t^2.
     \label{eq:shorttime}
 \end{align}
-We consider the XXZ Hamiltonian
-\newpage
-blabalbalbalablablabalbalbalablablabalba
+We want to consider the expectation value of the $i$th spin $\braket{S_i^z}$ for the total antiferromagnetic state 
+\begin{align}
+    \ket a=\ket{\uparrow\downarrow\uparrow\downarrow\dots\downarrow\uparrow}.
+    \label{eq:totalantif}
+\end{align}
+As the Heisenberg equation also holds for expectation values of operators, our expansion reads
+\begin{align}
+    \braket{S_i^z}_t=\braket{S_i^z}_0+i\braket{[H,S_i^z]}t-\frac{1}{2}\braket{\left[ H,[H,S_i^z] \right]}t^2+\mathcal{O}(t^3).
+    \label{eq:kurzexpansion}
+\end{align}
+From \cref{eq:comm} it is apparent that the linear term drops out, since all angular momentum eigenstates with different $S^z$ are orthogonal to each other. Following the same line of reasoning, and using $S^\pm S^\mp=\mathbf{S}^2-(S^z)^2\pm S^z$, one can see that 
+\begin{align}
+    \bra{\psi}\left[ [S_i^z,H],H \right]\ket \psi =\bra \psi \left[ (S_{i-1}^+ S_{i-1}^- + S_{i+1}^+ S_{i+1}^-)S_i^z-S_i^+ S_i^- S_{i-1}^z-S_i^+ S_i^- S_{i+1}^z \right]\ket\psi \nonumber\\
+    =\bra \psi \big[ \left( \mathbf{S}_{i-1}^2-(S_{i-1}^z)^2+S_{i-1}^z+\mathbf{S}_{i+1}^2-(S_{i+1}^z)^2+S_{i+1}^z \right)S_i^z\nonumber\\
+    -\left( \mathbf{S}_i^2-(S_i^z)^2+S_i^z \right)\left( S_{i-1}^z+S_{i+1}^z \right) \big]\ket \psi.
+    \label{eq:secondorderexp}
+\end{align}
+Evaluating this expression for the state given in \cref{eq:totalantif} results in the following approximation for the short-time evolution:
+\begin{align}
+    \braket{S_i^z}_t=\pm\frac{1}{2}\mp\frac{1}{2}t^2+\mathcal{O}(t^3),
+    \label{eq:kurzzeit}
+\end{align}
+where the upper signs are to be used with a spin up as the initial $i$ state ($\ket{\dots\underbrace{\uparrow}_i\dots})$ and vice versa. 
+In \cref{fig:kurzzeit}, the time evolution of $\braket{S_1^z}$ computed with the program is plotted for variable system sizes $N=4,6,8,10,12,14$ with $\mu=0$, $\lambda=0$ in \cref{eq:XXZham}. The dashed blue line is the short-time approximation \cref{eq:kurzzeit}, which correctly describes the short-time behaviour of the system. Furthermore, it can be shown that for an infinite system size, the expectation value of the spin can be expressed using the zeroth Bessel function [citation needed!]:
+\begin{align}
+    \braket{S_i^z}_t\big|_{N\rightarrow\infty}=\mp\frac{1}{2}J_0(2t),
+    \label{eq:besselkurzzeit}
+\end{align}
+which is also shown in \cref{fig:kurzzeit}. As $N$ increases, the expectation value computed by the program matches this theoretical prediction longer and longer.
+Overall, this is a clear indication that the time evolution our program delivers is correct.
 \begin{figure}[]
     \centering
     \input{kurzzeit}
-    \caption{blabla}
-    \label{fig:}
+    \caption{In color: Short-time evolution of the expectation value for the first spin of the total antiferromagnetic state \cref{eq:totalantif} for different $N$. In blue-dashed: Short-time approximation calculated by means of a Baker Campbell Hausdorff-expansion. In black-dashed: Theoretical calculation for an infinite-sized system.}
+    \label{fig:kurzzeit}
 \end{figure}
-blablabalbla
 \chapter{Ergebnisse}
 Test\dots
 citation: \cite{sand11}

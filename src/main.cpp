@@ -254,7 +254,7 @@ int main()
     cout <<"\n";
 
   
-    testHam.set_ham(0.3,0); // mu=0.5,Lambda=0.5
+    testHam.set_ham(0,0); // mu=0.5,Lambda=0.5
     cout <<endl<<"<><><><><><><><><><><><><><><><>Diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
     testHam.diagonalize();
     //testHam.print_hamiltonian();
