@@ -80,10 +80,9 @@ void plot_sz(Hamiltonian* h,cx_vec state,double dt,double T){
     state=h->nat_2_eigen(state); //in eigenbasis transformieren
     ofstream myfile;
     stringstream str;
-    str <<"sz_N-"<< N <<"_m-"<<h->get_magnetization()<<"_l-"<<h->get_lambda()<<"_mu-"<<h->get_mu()<<"_dt-"<<dt<<"_T-"<<T<<".dat";
+    str <<"Sz_"<<h->get_lambda()<<"_"<<h->get_mu()<<".dat";
     myfile.open(str.str().c_str());
-    stringstream str2;
-    str2 <<"sz_N-"<< N <<"_m-"<<h->get_magnetization()<<"_l-"<<h->get_lambda()<<"_mu-"<<h->get_mu()<<"_dt-"<<dt<<"_T-"<<T<<".eps";
+
     Measurement testMes(h);
     Timeevolver testTime(h);
 
@@ -95,8 +94,8 @@ void plot_sz(Hamiltonian* h,cx_vec state,double dt,double T){
     for (int i=0;i<N;i++)
         myfile <<testMes.sz_i(state,i)<<"\t";
     myfile<<endl;
-    gp <<"reset"<<endl;
-    gp <<"set term eps"<<endl;
+    /*gp <<"reset"<<endl;
+    gp <<"set term eps size 8in, 8in"<<endl;
     gp <<"set output '"<<str2.str()<<"'"<<endl;
     gp <<"set noborder"<<endl;
     gp <<"set autoscale xfix"<<endl;
@@ -104,6 +103,7 @@ void plot_sz(Hamiltonian* h,cx_vec state,double dt,double T){
     gp <<"set autoscale cbfix"<<endl;
     gp <<"load 'RdBu.plt'"<<endl;
     gp <<"set palette negative"<<endl;
+    */
     //time translation:
     cout <<endl<<"<><><><><><><><><><><><><><><><>Zeitentwicklung<><><><><><><><><><><><><><><>"<<endl<<endl;
     double t=0;
@@ -114,8 +114,9 @@ void plot_sz(Hamiltonian* h,cx_vec state,double dt,double T){
             myfile << testMes.sz_i(state,i)<<"\t";
         myfile << endl;
     }
-    gp <<"p '"<<str.str()<<"' matrix with image notitle" <<endl;
+    /*gp <<"p '"<<str.str()<<"' matrix with image notitle" <<endl;
     gp <<"set output"<<endl;  
+    */
     myfile.close(); 
 }
 
@@ -125,10 +126,9 @@ void plot_szsz_n(Hamiltonian* h,cx_vec state,int n,double dt, double T){
     state=h->nat_2_eigen(state); //in eigenbasis transformieren
     ofstream myfile;
     stringstream str;
-    str <<"sz_"<<n<<"_N-"<< N <<"_m-"<<h->get_magnetization()<<"_l-"<<h->get_lambda()<<"_mu-"<<h->get_mu()<<"_dt-"<<dt<<"_T-"<<T<<".dat";
+    str <<"SzSz_"<<h->get_lambda()<<"_"<<h->get_mu()<<".dat";
     myfile.open(str.str().c_str());
-    stringstream str2;
-    str2 <<"sz_"<<n<<"_N-"<< N <<"_m-"<<h->get_magnetization()<<"_l-"<<h->get_lambda()<<"_mu-"<<h->get_mu()<<"_dt-"<<dt<<"_T-"<<T<<".eps";
+
     Measurement testMes(h);
     Timeevolver testTime(h);
 
@@ -142,8 +142,8 @@ void plot_szsz_n(Hamiltonian* h,cx_vec state,int n,double dt, double T){
         myfile <<testMes.sz_i_sz_in(state,i,n)<<"\t";
     }
     myfile<<endl;
-    gp <<"reset"<<endl;
-    gp <<"set term eps size 4in, 8in"<<endl;
+    /*gp <<"reset"<<endl;
+    gp <<"set term eps size 8in, 8in"<<endl;
     gp <<"set output '"<<str2.str()<<"'"<<endl;
     gp <<"set noborder"<<endl;
     gp <<"set noborder"<<endl;
@@ -152,7 +152,7 @@ void plot_szsz_n(Hamiltonian* h,cx_vec state,int n,double dt, double T){
     gp <<"set autoscale cbfix"<<endl;
     gp <<"load 'RdBu.plt'"<<endl;
     gp <<"set palette negative"<<endl;
- 
+    */ 
     //time translation:
     cout <<endl<<"<><><><><><><><><><><><><><><><>Zeitentwicklung<><><><><><><><><><><><><><><>"<<endl<<endl;
     double t=0;
@@ -164,8 +164,10 @@ void plot_szsz_n(Hamiltonian* h,cx_vec state,int n,double dt, double T){
         }
         myfile << endl;
     }
+    /*
     gp <<"p '"<<str.str()<<"' matrix with image notitle" <<endl;
     gp <<"set output"<<endl;  
+    */
     myfile.close(); 
 }
 
@@ -217,7 +219,7 @@ void plot_kurz(Hamiltonian* h,cx_vec state,double dt, double T){
 //============================================================================================================
 int main()
 {
-
+    
     int N; //system size
     cout <<"set system size: ";
     cin >>N;
@@ -225,7 +227,9 @@ int main()
     int m; //total magnetization counted in multiples of 1
     cout <<"set total magnetization (in multiples of 1/2): ";
     cin >>m;
-    cout <<"\n";
+    
+    cout <<endl;
+
 
     bool testpos=0; //test the position finder of the states. Set to 1 for test.
 
@@ -253,14 +257,6 @@ int main()
     testHam.print_basis_dimension();
     cout <<"\n";
 
-  
-    testHam.set_ham(0,0); // mu=0.5,Lambda=0.5
-    cout <<endl<<"<><><><><><><><><><><><><><><><>Diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    testHam.diagonalize();
-    //testHam.print_hamiltonian();
-    //testHam.print_diagonal();
-
-    
     char test[testHam.get_system_size()];
     cout << "insert initial state:"<<endl;
     cin.ignore();
@@ -269,9 +265,70 @@ int main()
     cout <<"vector is: "<<endl;
     cout << state <<endl;
 
-    plot_kurz(&testHam,state,0.01,10);
+    
+    double T=10;
+    double dt=0.01;
+
+    double lambda=0;
+    double mu=0;
+    testHam.set_ham(mu,lambda); // mu=0,Lambda=0
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_sz(&testHam,state,dt,T);
+    mu=0.4;
+    testHam.set_ham(mu,lambda); // mu=0.4,Lambda=0
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_sz(&testHam,state,dt,T);
+    mu=0.8;
+    testHam.set_ham(mu,lambda); // mu=0.8,Lambda=0
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_sz(&testHam,state,dt,T);
+    mu=1.2;
+    testHam.set_ham(mu,lambda); // mu=1.2,Lambda=0
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_sz(&testHam,state,dt,T);
+    mu=2;
+    testHam.set_ham(mu,lambda); // mu=2,Lambda=0
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_sz(&testHam,state,dt,T);
+
+    lambda=0.6;
+    mu=0;
+    testHam.set_ham(mu,lambda); // mu=0,Lambda=0.6
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_sz(&testHam,state,dt,T);
+    mu=0.4;
+    testHam.set_ham(mu,lambda); // mu=0.4,Lambda=0.6
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_sz(&testHam,state,dt,T);
+    mu=0.8;
+    testHam.set_ham(mu,lambda); // mu=0.8,Lambda=0.6
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_sz(&testHam,state,dt,T);
+    mu=1.2;
+    testHam.set_ham(mu,lambda); // mu=1.2,Lambda=0.6
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_sz(&testHam,state,dt,T);
+    mu=2;
+    testHam.set_ham(mu,lambda); // mu=2,Lambda=0.6
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize(); 
+    plot_sz(&testHam,state,dt,T);
+    
+
+
+
+    //plot_kurz(&testHam,state,0.01,10);
     //plot_lochschmidt_echo(&testHam,state,0.01,10);  //(ham,dt,T)
-    //plot_sz(&testHam,state,0.1,10);
+    
     //plot_szsz_n(&testHam,state,1,0.1,10); //(ham,n,dt,T)
 
   /*int i=0;

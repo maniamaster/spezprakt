@@ -15,9 +15,11 @@ void Basis::print_system_size()
 void Basis::generate_basis_list()
 {
     REP_TYPE max=(1<<_N)-1;
+    //REP_TYPE max=pow(2,_N)-1;  //<- for long ints
     int a=0; //initialization, position of basis vector in list
     vector<REP_TYPE> basisList;
     for (REP_TYPE s=0;s<=max;s++){
+        //cout << "test: state = " << s  << "max= "<<max<<endl;
         if (2*count_set_bits(s,_N) == (int(_m+_N))){
             a+=1;
             basisList.push_back (s);

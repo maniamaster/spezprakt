@@ -13,6 +13,7 @@
 
 #ifndef REP_TYPE
 #define REP_TYPE unsigned int
+//#define REP_TYPE unsigned long int
 #endif
 
 #include <limits.h>

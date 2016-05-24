@@ -65,8 +65,12 @@
 %% und in einem LaTeX bekanntem Verzeichnis installiert werden (notfalls
 %% dem Verzeichnis mit der Arbeit).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% EIGENE VERÄNDERUNGEN:#####################
 %% Bra-Ket Notation: \bracket{||} oder \bra{}
+\usepackage{caption}
+\usepackage{subcaption}
+
 \usepackage{braket}
 
 \usepackage{cleveref}
@@ -77,7 +81,7 @@
 \newcommand{\vect}[1]{\bm{#1}}
 \renewcommand{\d}[1]{\ensuremath{\operatorname{d}\!{#1}}}
 %%########################################################
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 %%
@@ -426,7 +430,7 @@ where $H$ is the Hamiltonian and
 The subscript $H$ is dropped in what follows. 
 Using the Baker-Campbell-Hausdorff formula $\text{Ad}_{\exp {iHt}}=\exp{\text{ad}_{iHt}}$ and expanding to second order, we get
 \begin{align}
-    O(t)\approx O(0)+i[H,O]t-\frac{1}{2}\left[H,[H,O]\right]t^2.
+    O(t)\approx O+i[H,O]t-\frac{1}{2}\left[H,[H,O]\right]t^2,~ ~O\equiv O(0).
     \label{eq:shorttime}
 \end{align}
 We want to consider the expectation value of the $i$th spin $\braket{S_i^z}$ for the total antiferromagnetic state 
@@ -439,9 +443,9 @@ As the Heisenberg equation also holds for expectation values of operators, our e
     \braket{S_i^z}_t=\braket{S_i^z}_0+i\braket{[H,S_i^z]}t-\frac{1}{2}\braket{\left[ H,[H,S_i^z] \right]}t^2+\mathcal{O}(t^3).
     \label{eq:kurzexpansion}
 \end{align}
-From \cref{eq:comm} it is apparent that the linear term drops out, since all angular momentum eigenstates with different $S^z$ are orthogonal to each other. Following the same line of reasoning, and using $S^\pm S^\mp=\mathbf{S}^2-(S^z)^2\pm S^z$, one can see that 
+From \cref{eq:comm} it is apparent that the linear term drops out, since all angular momentum eigenstates with different $S^z$ are orthogonal to each other. Following the same line of reasoning, and using $S^\pm S^\mp=\mathbf{S}^2-(S^z)^2\pm S^z$, one can show that 
 \begin{align}
-    \bra{\psi}\left[ [S_i^z,H],H \right]\ket \psi =\bra \psi \left[ (S_{i-1}^+ S_{i-1}^- + S_{i+1}^+ S_{i+1}^-)S_i^z-S_i^+ S_i^- S_{i-1}^z-S_i^+ S_i^- S_{i+1}^z \right]\ket\psi \nonumber\\
+    \bra{\psi}\left[ H,[H,S_i^z] \right]\ket \psi =\bra \psi \left[ (S_{i-1}^+ S_{i-1}^- + S_{i+1}^+ S_{i+1}^-)S_i^z-S_i^+ S_i^- S_{i-1}^z-S_i^+ S_i^- S_{i+1}^z \right]\ket\psi \nonumber\\
     =\bra \psi \big[ \left( \mathbf{S}_{i-1}^2-(S_{i-1}^z)^2+S_{i-1}^z+\mathbf{S}_{i+1}^2-(S_{i+1}^z)^2+S_{i+1}^z \right)S_i^z\nonumber\\
     -\left( \mathbf{S}_i^2-(S_i^z)^2+S_i^z \right)\left( S_{i-1}^z+S_{i+1}^z \right) \big]\ket \psi.
     \label{eq:secondorderexp}
@@ -458,12 +462,68 @@ In \cref{fig:kurzzeit}, the time evolution of $\braket{S_1^z}$ computed with the
     \label{eq:besselkurzzeit}
 \end{align}
 which is also shown in \cref{fig:kurzzeit}. As $N$ increases, the expectation value computed by the program matches this theoretical prediction longer and longer.
-Overall, this is a clear indication that the time evolution our program delivers is correct.
+Overall, this is a clear indication that the time evolution computed by the program is correct.
 \begin{figure}[]
     \centering
     \input{kurzzeit}
     \caption{In color: Short-time evolution of the expectation value for the first spin of the total antiferromagnetic state \cref{eq:totalantif} for different $N$. In blue-dashed: Short-time approximation calculated by means of a Baker Campbell Hausdorff-expansion. In black-dashed: Theoretical calculation for an infinite-sized system.}
     \label{fig:kurzzeit}
+\end{figure}
+
+\begin{figure}[]
+    \begin{subfigure}{.55\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{figures/Sz_l0_mu0_0.tex}}
+        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
+        \label{fig:testsingle}
+    \end{subfigure}
+    \begin{subfigure}{.55\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{figures/Sz_l0_mu0_8.tex}}
+        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
+        \label{fig:testsingle2}
+    \end{subfigure}
+    \begin{subfigure}{.55\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{figures/Sz_l0_mu1_2.tex}}
+        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
+        \label{fig:testsingle3}
+    \end{subfigure}
+    \begin{subfigure}{.55\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{figures/Sz_l0_mu2_0.tex}}
+        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
+        \label{fig:testsingle4}
+    \end{subfigure}
+    \caption{BLAAKJDGJKADJAGDJADGJD}
+\end{figure}
+
+\begin{figure}[]
+    \begin{subfigure}{.55\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{figures/Sz_l06_mu0_0.tex}}
+        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
+        \label{fig:testsingle5}
+    \end{subfigure}
+    \begin{subfigure}{.55\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{figures/Sz_l06_mu0_8.tex}}
+        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
+        \label{fig:testsingle6}
+    \end{subfigure}
+    \begin{subfigure}{.55\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{figures/Sz_l06_mu1_2.tex}}
+        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
+        \label{fig:testsingle7}
+    \end{subfigure}
+    \begin{subfigure}{.55\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{figures/Sz_l06_mu2_0.tex}}
+        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
+        \label{fig:testsingle8}
+    \end{subfigure}
+    \caption{BLAAKJDGJKADJAGDJADGJD}
 \end{figure}
 \chapter{Ergebnisse}
 Test\dots
