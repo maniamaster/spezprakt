@@ -266,67 +266,25 @@ int main()
     cout << state <<endl;
 
     
-    double T=10;
+    double T=60;
     double dt=0.01;
-
-    double lambda=0;
-    double mu=0;
-    testHam.set_ham(mu,lambda); // mu=0,Lambda=0
-    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    testHam.diagonalize();
-    plot_sz(&testHam,state,dt,T);
-    mu=0.4;
-    testHam.set_ham(mu,lambda); // mu=0.4,Lambda=0
-    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    testHam.diagonalize();
-    plot_sz(&testHam,state,dt,T);
-    mu=0.8;
-    testHam.set_ham(mu,lambda); // mu=0.8,Lambda=0
-    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    testHam.diagonalize();
-    plot_sz(&testHam,state,dt,T);
-    mu=1.2;
-    testHam.set_ham(mu,lambda); // mu=1.2,Lambda=0
-    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    testHam.diagonalize();
-    plot_sz(&testHam,state,dt,T);
-    mu=2;
-    testHam.set_ham(mu,lambda); // mu=2,Lambda=0
-    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    testHam.diagonalize();
-    plot_sz(&testHam,state,dt,T);
-
-    lambda=0.6;
-    mu=0;
-    testHam.set_ham(mu,lambda); // mu=0,Lambda=0.6
-    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    testHam.diagonalize();
-    plot_sz(&testHam,state,dt,T);
-    mu=0.4;
-    testHam.set_ham(mu,lambda); // mu=0.4,Lambda=0.6
-    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    testHam.diagonalize();
-    plot_sz(&testHam,state,dt,T);
-    mu=0.8;
-    testHam.set_ham(mu,lambda); // mu=0.8,Lambda=0.6
-    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    testHam.diagonalize();
-    plot_sz(&testHam,state,dt,T);
-    mu=1.2;
-    testHam.set_ham(mu,lambda); // mu=1.2,Lambda=0.6
-    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    testHam.diagonalize();
-    plot_sz(&testHam,state,dt,T);
-    mu=2;
-    testHam.set_ham(mu,lambda); // mu=2,Lambda=0.6
-    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
-    testHam.diagonalize(); 
-    plot_sz(&testHam,state,dt,T);
     
-
-
-
-    //plot_kurz(&testHam,state,0.01,10);
+    double mu=0;
+    double lambda=0;
+    /*
+    while (lambda <= 1){
+        testHam.set_ham(mu,lambda); // mu=0,Lambda=0
+        cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+        testHam.diagonalize();
+        plot_sz(&testHam,state,dt,T);
+        T-=5;
+        lambda+=0.1;
+    } 
+    */
+    testHam.set_ham(0,0);
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_kurz(&testHam,state,0.01,10);
     //plot_lochschmidt_echo(&testHam,state,0.01,10);  //(ham,dt,T)
     
     //plot_szsz_n(&testHam,state,1,0.1,10); //(ham,n,dt,T)

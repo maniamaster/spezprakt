@@ -28,7 +28,7 @@ void Hamiltonian::set_ham(double mu,double lambda){
                 _ham(a,a)-=_mu*double(1/4.);
                 flipstate=swap_bits(_list[a],_N,i,j);
                 b=find_state(flipstate);
-                _ham(a,b)+=double(1/2.);
+                _ham(a,b)=double(1/2.); //+= ?
             }
             k=(i+2)%_N;
             if (compare_bits(_list[a],i,_list[a],k,_N)){
@@ -38,7 +38,7 @@ void Hamiltonian::set_ham(double mu,double lambda){
                 _ham(a,a)-=_lambda*_mu*double(1/4.);
                 flipstate=swap_bits(_list[a],_N,i,k);
                 b=find_state(flipstate);
-                _ham(a,b)+=_lambda*double(1/2.);
+                _ham(a,b)=_lambda*double(1/2.); //+= ?
             }
         }
     }

@@ -456,13 +456,14 @@ Evaluating this expression for the state given in \cref{eq:totalantif} results i
     \label{eq:kurzzeit}
 \end{align}
 where the upper signs are to be used with a spin up as the initial $i$ state ($\ket{\dots\underbrace{\uparrow}_i\dots})$ and vice versa. 
-In \cref{fig:kurzzeit}, the time evolution of $\braket{S_1^z}$ computed with the program is plotted for variable system sizes $N=4,6,8,10,12,14$ with $\mu=0$, $\lambda=0$ in \cref{eq:XXZham}. The dashed blue line is the short-time approximation \cref{eq:kurzzeit}, which correctly describes the short-time behaviour of the system. Furthermore, it can be shown that for an infinite system size, the expectation value of the spin can be expressed using the zeroth Bessel function [citation needed!]:
+In \cref{fig:kurzzeit}, the time evolution of $\braket{S_1^z}$ computed with the program is plotted for variable system sizes $N=2,4,6,8,10,12,14$ with $\mu=0$, $\lambda=0$ in \cref{eq:XXZham}. The dashed blue line is the short-time approximation \cref{eq:kurzzeit}, which correctly describes the short-time behaviour of the system. Furthermore, it can be shown that for an infinite system size, the expectation value of the spin can be expressed using the zeroth Bessel function [citation needed!]:
 \begin{align}
     \braket{S_i^z}_t\big|_{N\rightarrow\infty}=\mp\frac{1}{2}J_0(2t),
     \label{eq:besselkurzzeit}
 \end{align}
 which is also shown in \cref{fig:kurzzeit}. As $N$ increases, the expectation value computed by the program matches this theoretical prediction longer and longer.
 Overall, this is a clear indication that the time evolution computed by the program is correct.
+
 \begin{figure}[]
     \centering
     \input{kurzzeit}
@@ -470,61 +471,87 @@ Overall, this is a clear indication that the time evolution computed by the prog
     \label{fig:kurzzeit}
 \end{figure}
 
+\subsection{Magnon propagation}
+The propagation of single or coupled spin flips in the form of ``magnons'' in a heisenberg chain is a current area of research. It is interesting to see, whether we can reproduce some of the qualitative findings of other publications. We begin by considering a single spin flip state in a length $N=31$ chain. The state is given by
+\begin{align}
+    \ket a =    \ket{\uparrow\uparrow\dots\uparrow\uparrow\downarrow\uparrow\uparrow\dots\uparrow\uparrow}
+    \label{eq:singlestate}
+\end{align}
+In \cref{fig:testsingle,fig:testsingle2,fig:testsingle3,fig:testsingle4}, a spacetime matrix plot of the expactation value $\braket{S_i^z}_t$ is  plotted for $\lambda=0$ and different values of anisotropy $\mu$. 
 \begin{figure}[]
-    \begin{subfigure}{.55\textwidth}
+    \begin{subfigure}{.3\textwidth}
         \centering
-        \resizebox{\textwidth}{!}{\input{figures/Sz_l0_mu0_0.tex}}
-        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
+        \resizebox{\textwidth}{!}{\input{Sz_l0_0.tex}}
+        \caption{$\lambda=0$}
         \label{fig:testsingle}
     \end{subfigure}
-    \begin{subfigure}{.55\textwidth}
+    \begin{subfigure}{.3\textwidth}
         \centering
-        \resizebox{\textwidth}{!}{\input{figures/Sz_l0_mu0_8.tex}}
-        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
-        \label{fig:testsingle2}
-    \end{subfigure}
-    \begin{subfigure}{.55\textwidth}
+        \resizebox{\textwidth}{!}{\input{Sz_l0_1.tex}}
+        \caption{$\lambda=0.1$}
+        \label{fig:testsingle}
+    \end{subfigure} 
+    \begin{subfigure}{.3\textwidth}
         \centering
-        \resizebox{\textwidth}{!}{\input{figures/Sz_l0_mu1_2.tex}}
-        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
-        \label{fig:testsingle3}
+        \resizebox{\textwidth}{!}{\input{Sz_l0_2.tex}}
+        \caption{$\lambda=0.2$}
+        \label{fig:testsingle}
     \end{subfigure}
-    \begin{subfigure}{.55\textwidth}
+    \begin{subfigure}{.3\textwidth}
         \centering
-        \resizebox{\textwidth}{!}{\input{figures/Sz_l0_mu2_0.tex}}
-        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
-        \label{fig:testsingle4}
+        \resizebox{\textwidth}{!}{\input{Sz_l0_3.tex}}
+        \caption{$\lambda=0.3$}
+        \label{fig:testsingle}
     \end{subfigure}
-    \caption{BLAAKJDGJKADJAGDJADGJD}
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz_l0_4.tex}}
+        \caption{$\lambda=0.4$}
+        \label{fig:testsingle}
+    \end{subfigure}
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz_l0_5.tex}}
+        \caption{$\lambda=0.5$}
+        \label{fig:testsingle}
+    \end{subfigure}
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz_l0_6.tex}}
+        \caption{$\lambda=0.6$}
+        \label{fig:testsingle}
+    \end{subfigure}
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz_l0_7.tex}}
+        \caption{$\lambda=0.7$}
+        \label{fig:testsingle}
+    \end{subfigure}
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz_l0_8.tex}}
+        \caption{$\lambda=0.8$}
+        \label{fig:testsingle}
+    \end{subfigure}
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz_l0_9.tex}}
+        \caption{$\lambda=0.9$}
+        \label{fig:testsingle}
+    \end{subfigure}
+    \begin{subfigure}{.3\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz_l1_0.tex}}
+        \caption{$\lambda=1$}
+        \label{fig:testsingle}
+    \end{subfigure}
+    \caption{BDbJBWDBSLBDJLBWUDBJLSBDJKLBWÖJKFBÖJKBFJÖKSBJFBSJF}
 \end{figure}
 
-\begin{figure}[]
-    \begin{subfigure}{.55\textwidth}
-        \centering
-        \resizebox{\textwidth}{!}{\input{figures/Sz_l06_mu0_0.tex}}
-        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
-        \label{fig:testsingle5}
-    \end{subfigure}
-    \begin{subfigure}{.55\textwidth}
-        \centering
-        \resizebox{\textwidth}{!}{\input{figures/Sz_l06_mu0_8.tex}}
-        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
-        \label{fig:testsingle6}
-    \end{subfigure}
-    \begin{subfigure}{.55\textwidth}
-        \centering
-        \resizebox{\textwidth}{!}{\input{figures/Sz_l06_mu1_2.tex}}
-        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
-        \label{fig:testsingle7}
-    \end{subfigure}
-    \begin{subfigure}{.55\textwidth}
-        \centering
-        \resizebox{\textwidth}{!}{\input{figures/Sz_l06_mu2_0.tex}}
-        \caption{captionsjdijajdkjsakdjfdkjsafashfasdlkwodkweodkefheufhsdjfd}
-        \label{fig:testsingle8}
-    \end{subfigure}
-    \caption{BLAAKJDGJKADJAGDJADGJD}
-\end{figure}
+
+
+
+
 \chapter{Ergebnisse}
 Test\dots
 citation: \cite{sand11}
