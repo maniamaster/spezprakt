@@ -471,87 +471,170 @@ Overall, this is a clear indication that the time evolution computed by the prog
     \label{fig:kurzzeit}
 \end{figure}
 
-\subsection{Magnon propagation}
+\subsection{Single magnon propagation}
 The propagation of single or coupled spin flips in the form of ``magnons'' in a heisenberg chain is a current area of research. It is interesting to see, whether we can reproduce some of the qualitative findings of other publications. We begin by considering a single spin flip state in a length $N=31$ chain. The state is given by
 \begin{align}
-    \ket a =    \ket{\uparrow\uparrow\dots\uparrow\uparrow\downarrow\uparrow\uparrow\dots\uparrow\uparrow}
+    \ket a =    \ket{\uparrow\uparrow\dots\uparrow\uparrow\downarrow\uparrow\uparrow\dots\uparrow\uparrow}.
     \label{eq:singlestate}
 \end{align}
-In \cref{fig:testsingle,fig:testsingle2,fig:testsingle3,fig:testsingle4}, a spacetime matrix plot of the expactation value $\braket{S_i^z}_t$ is  plotted for $\lambda=0$ and different values of anisotropy $\mu$. 
+In \cref{fig:testsingle,fig:testsingle2,fig:testsingle3,fig:testsingle4,fig:testsingle5,fig:testsingle6,fig:testsingle7,fig:testsingle8,fig:testsingle9,fig:testsingle10,}, a spacetime matrix plot of the expactation value $\braket{S_i^z}_t$ is  plotted for $\mu=0$ and different values of NNN coupling $\lambda$. As one can see in \cref{fig:testsingle}, for $\lambda =0$ the single excitation magnon spreads with a well defined velocity of $J$, which is in agreement to recent studies on the topic, see \cite[p.\,101]{ganahl}. As confirmed by these studies, the propagation is in no way depending on the choice of $\mu$. The spin flip in the middle performs a damped oscillation, giving birth to multiple propagation cascades \cite[p.\,99]{ganahl}. The higher the NNN coupling, the more chaotic the propagation becomes. A particularly interesting feature is seen in \cref{fig:testsingle4}: A stable region with a close to zero expectation value forms in the middle. At even higher $\lambda$ it also propagates away but stays more or less bound. Note the differences at the boundary in comparison to \cite[p.\,101]{ganahl}, where no periodic boundary conditions were used. Also note that the time axis on the left has been properly scaled to make the different plots comparable. The higher $\lambda$, the faster the propagation occurs, which makes sense in the picture that the spin flips get ``pulled'' by more neighbors. The white peaks are a characteristic of finite systems and arise from magnons traveling in both directions hitting each other and interfering constructively. As this state is similar to the initial state, it corresponds to an echo peak in the Loschmidt echo. As the propagation velocity is $J$ (1 in our case), this peak occurs approximately at $t=J N$.
 \begin{figure}[]
-    \begin{subfigure}{.3\textwidth}
+    \begin{subfigure}{.5\textwidth}
         \centering
         \resizebox{\textwidth}{!}{\input{Sz_l0_0.tex}}
         \caption{$\lambda=0$}
         \label{fig:testsingle}
     \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+    \begin{subfigure}{.5\textwidth}
         \centering
         \resizebox{\textwidth}{!}{\input{Sz_l0_1.tex}}
         \caption{$\lambda=0.1$}
-        \label{fig:testsingle}
+        \label{fig:testsingle2}
     \end{subfigure} 
-    \begin{subfigure}{.3\textwidth}
+    \begin{subfigure}{.5\textwidth}
         \centering
         \resizebox{\textwidth}{!}{\input{Sz_l0_2.tex}}
         \caption{$\lambda=0.2$}
-        \label{fig:testsingle}
+        \label{fig:testsingle3}
     \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+    \begin{subfigure}{.5\textwidth}
         \centering
         \resizebox{\textwidth}{!}{\input{Sz_l0_3.tex}}
         \caption{$\lambda=0.3$}
-        \label{fig:testsingle}
+        \label{fig:testsingle4}
     \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+    \begin{subfigure}{.5\textwidth}
         \centering
         \resizebox{\textwidth}{!}{\input{Sz_l0_4.tex}}
         \caption{$\lambda=0.4$}
-        \label{fig:testsingle}
+        \label{fig:testsingle5}
     \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+    \begin{subfigure}{.5\textwidth}
         \centering
         \resizebox{\textwidth}{!}{\input{Sz_l0_5.tex}}
         \caption{$\lambda=0.5$}
-        \label{fig:testsingle}
+        \label{fig:testsingle6}
     \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+    \end{figure}
+    \begin{figure}
+        \ContinuedFloat
+    \begin{subfigure}{.5\textwidth}
         \centering
         \resizebox{\textwidth}{!}{\input{Sz_l0_6.tex}}
         \caption{$\lambda=0.6$}
-        \label{fig:testsingle}
+        \label{fig:testsingle7}
     \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+    \begin{subfigure}{.5\textwidth}
         \centering
         \resizebox{\textwidth}{!}{\input{Sz_l0_7.tex}}
         \caption{$\lambda=0.7$}
-        \label{fig:testsingle}
+        \label{fig:testsingle8}
     \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+    \begin{subfigure}{.5\textwidth}
         \centering
         \resizebox{\textwidth}{!}{\input{Sz_l0_8.tex}}
         \caption{$\lambda=0.8$}
-        \label{fig:testsingle}
+        \label{fig:testsingle9}
     \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
+    \begin{subfigure}{.5\textwidth}
         \centering
         \resizebox{\textwidth}{!}{\input{Sz_l0_9.tex}}
         \caption{$\lambda=0.9$}
-        \label{fig:testsingle}
+        \label{fig:testsingle10}
     \end{subfigure}
-    \begin{subfigure}{.3\textwidth}
-        \centering
-        \resizebox{\textwidth}{!}{\input{Sz_l1_0.tex}}
-        \caption{$\lambda=1$}
-        \label{fig:testsingle}
-    \end{subfigure}
-    \caption{BDbJBWDBSLBDJLBWUDBJLSBDJKLBWÖJKFBÖJKBFJÖKSBJFBSJF}
+    \caption{Space time plot of the Propagation of single spin excitations in the form of magnons depending on the NNN coupling parameter $\lambda$.}
 \end{figure}
+\subsection{Multiple-string magnon propagation}
+This time, we consider a double spinflip in the middle as the initial state:
+\begin{align}
+    \ket a =\ket{\uparrow\uparrow\dots\uparrow\uparrow\downarrow\downarrow\uparrow\uparrow\dots\uparrow\uparrow}.
+    \label{eq:initdouble}
+\end{align}
+The space time plot for $N=30$ and $\lambda=0$ and varying $\mu$ is shown in \cref{fig:testdouble1,fig:testdouble2,fig:testdouble3,fig:testdouble4,fig:testdouble5,fig:testdouble6,fig:testdouble7,fig:testdouble8,fig:testdouble9,fig:testdouble10}. For low $\mu$ the qualitative behaviour mirrors that of the previous section. However, for increasing $\mu$ a second, slower propagation cascade is developing and eventually ovepowering the original cascade. This is in agreement to \cite{ganahlpaper} and is explained by the formation of bound states between two spins, so called ``two-string magnons''. The higher $\mu$, the stronger these spins are bound together and the slower they propagate.
 
-
-
-
-
+\begin{figure}[]
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz2_l0_mu0_0.tex}}
+        \caption{$\mu=0$}
+        \label{fig:testdouble1}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz2_l0_mu0_1.tex}}
+        \caption{$\mu=0.1$}
+        \label{fig:testdouble2}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz2_l0_mu0_2.tex}}
+        \caption{$\mu=0.2$}
+        \label{fig:testdouble3}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz2_l0_mu0_3.tex}}
+        \caption{$\mu=0.3$}
+        \label{fig:testdouble4}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz2_l0_mu0_4.tex}}
+        \caption{$\mu=0.4$}
+        \label{fig:testdouble5}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz2_l0_mu0_5.tex}}
+        \caption{$\mu=0.5$}
+        \label{fig:testdouble6}
+    \end{subfigure}
+\end{figure}
+\begin{figure}
+    \ContinuedFloat
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz2_l0_mu0_6.tex}}
+        \caption{$\mu=0.6$}
+        \label{fig:testdouble7}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz2_l0_mu0_7.tex}}
+        \caption{$\mu=0.7$}
+        \label{fig:testdouble8}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz2_l0_mu0_8.tex}}
+        \caption{$\mu=0.8$}
+        \label{fig:testdouble9}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{Sz2_l0_mu0_9.tex}}
+        \caption{$\mu=0.9$}
+        \label{fig:testdouble10}
+    \end{subfigure}
+    \caption{Two string magnon propagation for $\lambda=0, N=30$ for varying $\mu$. For increasing $\mu$, slower propagation cascades coming from bound spins can be observed.}
+\end{figure}
+\subsection{Magnon scattering}
+When two propagating magnons collide, it can be understood as a scattering event. As \cite{solitonscattering} outlines, this leads to a displacement. In \cref{fig:testcollision1,fig:testcollision2} a collision between a two-string magnon and a single magnon are shown. In \cref{fig:testcollision1} for $\mu=0$ no displacement can be observed. In \cref{fig:testcollision2} for $\mu=5$, there is a clear displacement of the single magnon as it collides with the other: The propagation cascade is shifted to the left, which is in analogy to \cite[fig.\,5]{solitonscattering}.
+\begin{figure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{SzCol_l0_mu0.tex}}
+        \caption{$\mu=0$}
+        \label{fig:testcollision1}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \resizebox{\textwidth}{!}{\input{SzCol_l0_mu5.tex}}
+        \caption{$\mu=0$}
+        \label{fig:testcollision2}
+    \end{subfigure}
+    \caption{d}
+\end{figure}
 \chapter{Ergebnisse}
 Test\dots
 citation: \cite{sand11}

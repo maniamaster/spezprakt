@@ -110,6 +110,7 @@ void plot_sz(Hamiltonian* h,cx_vec state,double dt,double T){
     while (t<T){
         testTime.time_fw(&state,dt);
         t=t+dt;
+        cout <<t <<endl;
         for (int i=0;i<N;i++)
             myfile << testMes.sz_i(state,i)<<"\t";
         myfile << endl;
@@ -266,11 +267,12 @@ int main()
     cout << state <<endl;
 
     
-    double T=60;
-    double dt=0.01;
+    double T=40; //60
+    double dt=0.1; //0.02
     
     double mu=0;
     double lambda=0;
+    
     /*
     while (lambda <= 1){
         testHam.set_ham(mu,lambda); // mu=0,Lambda=0
@@ -281,6 +283,29 @@ int main()
         lambda+=0.1;
     } 
     */
+    mu=0;
+    testHam.set_ham(mu,lambda); // mu=0,Lambda=0
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_sz(&testHam,state,dt,T);
+    mu=5;
+    testHam.set_ham(mu,lambda); // mu=6,Lambda=0
+    cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    testHam.diagonalize();
+    plot_sz(&testHam,state,dt,T);
+
+    /*
+    mu+=1;
+    while (mu <= 3){
+        testHam.set_ham(mu,lambda); // mu=0,Lambda=0
+        cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
+        testHam.diagonalize();
+        plot_sz(&testHam,state,dt,T);
+        mu+=1;
+    }
+    */
+
+    /*(kurzzeit)
     testHam.set_ham(0,0);
     cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
     testHam.diagonalize();
@@ -288,8 +313,10 @@ int main()
     //plot_lochschmidt_echo(&testHam,state,0.01,10);  //(ham,dt,T)
     
     //plot_szsz_n(&testHam,state,1,0.1,10); //(ham,n,dt,T)
+    */
 
-  /*int i=0;
+    /*
+  int i=0;
     for (;;){
         cout << "enter component:"<<endl;
         cin.ignore();
