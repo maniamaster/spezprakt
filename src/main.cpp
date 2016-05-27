@@ -35,7 +35,17 @@ cx_vec init_right_up(Hamiltonian* h){ //returns initial state vector with all sp
     return cres;
 }
 
-void plot_lochschmidt_echo(Hamiltonian *h,cx_vec state,double dt,double T){
+cx_vec ground_state(Hamiltonian* h){ //returns ground state of the Hamiltonian in natural basis
+    int dim = h->get_dim();
+    vec v = vec(zeros(dim));
+    v(0)=1;
+    cx_vec cv= cx_vec(v,zeros(dim));
+    cout << cv <<endl;
+    cv=h->eigen_2_nat(cv);
+    return cv;
+}
+
+void plot_lohschmidt_echo(Hamiltonian *h,cx_vec state,double dt,double T){
     Gnuplot gp;
     state=h->nat_2_eigen(state); //in eigenbasis transformieren
     cx_vec state_0=state;
@@ -215,7 +225,51 @@ void plot_kurz(Hamiltonian* h,cx_vec state,double dt, double T){
     */
     myfile.close();
 }
+   
+void plot_groundstate_quench(Hamiltonian* h1, Hamiltonian *h2,double dt, double T){
+
+    int N=h1->get_system_size();
+    cx_vec state=ground_state(h1);
+    state=h2->nat_2_eigen(state);
+    cout <<state<<endl;
+    cx_vec state_0=state;
+   
+    ofstream myfile;
+    myfile.open("groundstate.dat");
+    myfile << "#groundstate of h1:"<<endl;
+    myfile << *h1;
+    myfile << "#time evolution with h2:"<<endl;
+    myfile << *h2;
+    myfile << "# T="<<T<<endl;
+    myfile << "# dt="<<dt<<endl;
+    myfile << endl << "#t \t <Y0|Yt>"<<endl;
     
+    //time translation:
+    cout <<endl<<"<><><><><><><><><><><><><><><><>Zeitentwicklung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    double t=0;
+    double res=0;
+    Timeevolver testTime(h2);
+    res=norm(cdot(state_0,state));
+    myfile << t << "\t" << res << endl;
+    while (t<T){
+        testTime.time_fw(&state,dt);
+        t+=dt;
+        res=norm(cdot(state_0,state));
+        myfile << t << "\t" << res << endl;
+    }
+    myfile.close();
+
+    Gnuplot gp;
+    gp <<"reset"<<endl;
+    gp <<"set term eps"<<endl;
+    gp <<"set output \"groundstate.eps\""<<endl;
+    gp <<"set samples 2000"<<endl;
+    gp <<"set linetype 10"<<endl;
+    gp <<"set xrange [0:"<<T<<"]"<<endl;
+    gp <<"p \"groundstate.dat\" u 1:2  with lines lc rgb \"red\"  "<<endl;
+    gp <<"set output"<<endl;
+
+}
   
 //============================================================================================================
 int main()
@@ -258,6 +312,19 @@ int main()
     testHam.print_basis_dimension();
     cout <<"\n";
 
+    
+    //GROUND STATE:
+    Hamiltonian h1(N,m);
+    h1.set_ham(1.1,0); //mu=1.1
+    h1.diagonalize();
+    Hamiltonian h2(N,m);
+    h2.set_ham(0.9,0);
+    h2.diagonalize();
+    plot_groundstate_quench(&h1,&h2,0.01,30);
+    
+   
+    /*
+    //state eingeben :
     char test[testHam.get_system_size()];
     cout << "insert initial state:"<<endl;
     cin.ignore();
@@ -266,14 +333,19 @@ int main()
     cout <<"vector is: "<<endl;
     cout << state <<endl;
 
-    
+    testHam.set_ham(-2,0.2);
+    testHam.diagonalize();
+    plot_lohschmidt_echo(&testHam,state,0.01,50);
+    */
+
+    /* 
     double T=40; //60
     double dt=0.1; //0.02
     
     double mu=0;
     double lambda=0;
     
-    /*
+    
     while (lambda <= 1){
         testHam.set_ham(mu,lambda); // mu=0,Lambda=0
         cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
@@ -283,18 +355,21 @@ int main()
         lambda+=0.1;
     } 
     */
-    mu=0;
+
+    /*(kollision)
+    mu=0; 
     testHam.set_ham(mu,lambda); // mu=0,Lambda=0
     cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
     testHam.diagonalize();
     plot_sz(&testHam,state,dt,T);
     mu=5;
-    testHam.set_ham(mu,lambda); // mu=6,Lambda=0
+    testHam.set_ham(mu,lambda); // mu=5,Lambda=0
     cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
     testHam.diagonalize();
     plot_sz(&testHam,state,dt,T);
+    */
 
-    /*
+    /* (two string)
     mu+=1;
     while (mu <= 3){
         testHam.set_ham(mu,lambda); // mu=0,Lambda=0
@@ -310,7 +385,7 @@ int main()
     cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
     testHam.diagonalize();
     plot_kurz(&testHam,state,0.01,10);
-    //plot_lochschmidt_echo(&testHam,state,0.01,10);  //(ham,dt,T)
+    //plot_lohschmidt_echo(&testHam,state,0.01,10);  //(ham,dt,T)
     
     //plot_szsz_n(&testHam,state,1,0.1,10); //(ham,n,dt,T)
     */

@@ -71,7 +71,7 @@ void Hamiltonian::print_diagonal(){
     if (_diagonalized)
         _diag.print("P^(-1)*H*P=");
     else
-        cout << "Hamiltonian not yet diagonalied."<<endl;
+        cout << "Hamiltonian not yet diagonalized."<<endl;
 
 }
 
@@ -79,14 +79,14 @@ void Hamiltonian::print_eigval(){
     if (_diagonalized)
         _eigval.print("eigenvalues: ");
     else
-        cout << "Hamiltonian not yet diagonalied."<<endl;
+        cout << "Hamiltonian not yet diagonalized."<<endl;
 }
 
 void Hamiltonian::print_eigvec(){
     if (_diagonalized)
         _eigvec.print("P= ");
     else
-        cout << "Hamiltonian not yet diagonalied."<<endl;
+        cout << "Hamiltonian not yet diagonalized."<<endl;
 }
 
 cx_vec Hamiltonian::nat_2_eigen(cx_vec natvec){ 
@@ -94,7 +94,7 @@ cx_vec Hamiltonian::nat_2_eigen(cx_vec natvec){
         cx_vec res= _eigvec.t()*natvec;
         return res;
     } 
-    cout << "Hamiltonian not yet diagonalied."<<endl;
+    cout << "Hamiltonian not yet diagonalized."<<endl;
     return natvec;
 }
 
@@ -103,7 +103,7 @@ cx_vec Hamiltonian::eigen_2_nat(cx_vec eigenbasisvec){
         cx_vec res= _eigvec*eigenbasisvec;
         return res;
     } 
-    cout << "Hamiltonian not yet diagonalied."<<endl;
+    cout << "Hamiltonian not yet diagonalized."<<endl;
     return eigenbasisvec;
 }
 
