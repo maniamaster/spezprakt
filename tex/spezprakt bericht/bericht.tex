@@ -68,6 +68,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%% EIGENE VERÄNDERUNGEN:#####################
 %% Bra-Ket Notation: \bracket{||} oder \bra{}
+\usepackage{verbatim}
 \usepackage{caption}
 \usepackage{subcaption}
 
@@ -93,21 +94,23 @@
 \PlaceOfBirth{Kassel}
 %% Titel Arbeit. Das erste Argument ist der deutsche, das zweite der
 %% englische Titel.
-\ThesisTitle{Hier steht das Thema der Arbeit in deutsch}{Here comes the title of the thesis in english}
+\ThesisTitle{Spezialisierungspraktikum: Echodynamik mit statistischen Fluktuationen}{Lab course: echo dynamics with statistical fluctuations}
 %% Erst- und Zweitgutacher/in
 %% Ist der/die Betreuer/in nicht identisch mit dem/r Erstgutachter/in,
 %% muss diese/r als optionales Argument angegeben werden.
-\FirstReferee[Dr.\ \ldots]{Prof.\ Dr.\ Kehrein}
+\FirstReferee[Markus Schmitt]{Prof.\ Dr.\ Kehrein}
 \Institute{Institut f\"ur Theoretische Physik}
 \SecondReferee{Prof.\ Dr.\ Kree}
 %% Beginn und Ende des Anfertigungszeitraumes
-\ThesisBegin{1}{4}{2009}
-\ThesisEnd{15}{7}{2009}
+\ThesisBegin{19}{4}{2016} %nur bericht
+\ThesisEnd{1}{6}{2016}
 %% DO NOT TOUCH THESE LINES!!!!
 \frontmatter
 \maketitle
 \cleardoublepage
 %% Zusammenfassung. Falls nicht gewuenscht, bitte auskommentieren.
+
+\begin{comment}%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
   Here the key results of the thesis can be presented in about
   half a page.
@@ -126,6 +129,7 @@
 
 \end{abstract}
 \end{otherlanguage}
+\end{comment}%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% Ende des Vorspanns
 \cleardoublepage
@@ -136,6 +140,8 @@
 
 %% Hier kann man seine Bezeichnungsweisen erklaeren. Falls nicht
 %% benoetigt, bis einschliesslich \end{nomenclature} auskommentieren
+
+\begin{comment}%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{nomenclature}
 %% Fuer die Berechnung der Spaltenbreiten muss \usepackage{calc}
 %% geladen sein!
@@ -166,6 +172,9 @@
   max & maximal
 \end{longtable}
 \end{nomenclature}
+
+\end{comment}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %% \listoftables und \listoffigures sollten nur bei genuegender Anzahl Tabellen
 %% verwendet werden
 %\listoffigures
@@ -173,6 +182,7 @@
 
 \mainmatter   %% Anfang Hauptteil
 
+\begin{comment}%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Einleitung}
 Diese Vorlage \verb!GAUBM!
 für Bachelor- bzw.\ Masterarbeiten ist eine Überarbeitung der
@@ -288,6 +298,8 @@ Text\dots
 \end{table}
 
 Text\dots
+
+\end{comment}%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{``Lab course''}
 \section{Theoretical foundation and numerical methods}
@@ -435,7 +447,7 @@ Using the Baker-Campbell-Hausdorff formula $\text{Ad}_{\exp {iHt}}=\exp{\text{ad
 \end{align}
 We want to consider the expectation value of the $i$th spin $\braket{S_i^z}$ for the total antiferromagnetic state 
 \begin{align}
-    \ket a=\ket{\uparrow\downarrow\uparrow\downarrow\dots\downarrow\uparrow}.
+    \ket a=\ket{\uparrow\downarrow\uparrow\downarrow\dots\downarrow\uparrow\downarrow}.
     \label{eq:totalantif}
 \end{align}
 As the Heisenberg equation also holds for expectation values of operators, our expansion reads
@@ -633,8 +645,12 @@ When two propagating magnons collide, it can be understood as a scattering event
         \caption{$\mu=0$}
         \label{fig:testcollision2}
     \end{subfigure}
-    \caption{d}
+    \caption{Collision of a single magnon with a two-string magnon for $\mu=0$ and $\mu=5$. For $\mu=0$, no displacement is obvserved, whereas for $\mu=5$, the single magnon is shifted to the left after collision.}
 \end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ENDE BERICHT%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{comment}
 \chapter{Ergebnisse}
 Test\dots
 citation: \cite{sand11}
@@ -684,15 +700,20 @@ Text\dots
 \chapter{zweiter Anhang}
 Text\dots
 
+\end{comment}
+%##############################################################################################
+
 \cleardoublepage
 %% Bibliographie. Das Argument muss der Name der BIBTeX-Datenbank stehen.
 %% Ein Beispiel fuer eine solche Datenbank finden Sie in bthesis_datenbank.bib
 \bibliography{bthesis_datenbank} 
 
-\chapter*{Danksagung}
-Dank\dots
+%\chapter*{Danksagung}
+%Dank\dots
 
 %% Dieser Befehl MUSS am Ende stehen und erzeugt die Erklaerung ueber die
 %% benutzten Mittel
 \Declaration
+
+
 \end{document}

@@ -10,7 +10,7 @@ list =system("ls Sz_*.dat")
 end=".tex"
 mu=" 0 5 "
 set xlabel "particle index $i$"
-set ylabel "time $t$"
+set ylabel "time $Jt$"
 set cblabel '$\braket{S_1^z}_t$'
 set cbrange [-0.5:0.5]
 set cbtics (-0.5,-0.4,-0.3,-0.2,-0.1,0,0.1,0.2,0.3,0.4,0.5)
@@ -18,7 +18,7 @@ do for [i=1:words(list)] {
     name="SzCol_l0_mu".word(mu,i)
     outname= name.end
     set output outname
-    set title "$\\lambda=0,~\\mu=$".word(mu,i)[1:1].".".word(mu,i)[3:3]
+    set title "$\\lambda=0,~\\mu=$".word(mu,i)[1:1].", $N=24$"
     p word(list,i) matrix u 1:($2/50):3 with image notitle 
     set output
 }
