@@ -315,10 +315,10 @@ int main()
     
     //GROUND STATE:
     Hamiltonian h1(N,m);
-    h1.set_ham(1.1,0); //mu=1.1
+    h1.set_ham(-0.8,0); //mu=1.1
     h1.diagonalize();
     Hamiltonian h2(N,m);
-    h2.set_ham(0.9,0);
+    h2.set_ham(-2,0);
     h2.diagonalize();
     plot_groundstate_quench(&h1,&h2,0.01,30);
     

@@ -301,7 +301,7 @@ Text\dots
 
 \end{comment}%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{``Lab course''}
+\chapter{Lab course}
 \section{Theoretical foundation and numerical methods}
 \subsection{Introduction, exact diagonalization}
 In what follows, we are interested in a one-dimensional XXZ Heisenberg chain with next-nearest neighbour coupling. As such, we consider the following Hamiltonian:
@@ -311,16 +311,16 @@ In what follows, we are interested in a one-dimensional XXZ Heisenberg chain wit
     \label{eq:XXZham}
 \end{align}
 where the spins are labeled $i=1,\dots,N$ and $J$ is the interaction constant. The scalar product for the spin operators $\mathbf{S}_i\cdot\mathbf{S}_{i+n}$ has been decomposed into creation-annihilation operators $S^\pm=S^x \pm i S^y$ while  $\mu$ introduces an anisotropy for the z-direction compared to the x and y directions.
-Finally, $\lambda$ is a parameter controlling the strength of the next-nearest neighbor (NNN) interactions cf. \cite[4ff.]{xxz_springer}.\\
-First, would like to numerically compute the time evolution of such a system by means of exact diagonalization.
+Finally, $\lambda$ is a parameter controlling the strength of the next-nearest neighbor (NNN) interactions cf. \cite[p.\;4ff.]{xxz_springer}.\\
+First, we would like to numerically compute the time evolution of such a system by means of exact diagonalization.
 \subsection{Block diagonalization}
-In the following section, we follow closely the techniques and notation from \cite[55ff.]{sand11}.
+In the following section, we follow closely the techniques and notation from \mbox{\cite[p.\;55ff.]{sand11}}.
 The states are denoted as $\ket{S_0^z,S_1^z,\dots,S_{N-1}}$, where the subscript $i=0,\dots,N-1$ refers to the site $i$ of our one-dimensional chain. A particular state is abridgedly labeled by arrows, e.g.
 $\ket{\uparrow\downarrow\uparrow\downarrow\dots}$.
 Furthermore, periodic boundary conditions, which add additional symmetries, are assumed ($i=N-1+n\equiv n-1\label{eq:periodic}$).
-Exact diagonalization allows for total knowledge of the properties of a finite system by choosing a basis, setting up a Hamiltonian and diagonalizing it numerically. While theoretically applicable to any system size, this method is limited to around 30 spins, as the computational cost for diagonalization is $\propto 8^\text{dim. of basis}$[citation needed.] and the spin basis above grows like $2^N$ without utilizing symmetries.
-Symmetries can be used to transform the Hamiltonian matrix into block-diagonal form cf. \cite[56]{sand11} with each block belonging to states with a conserved quantum number, thereby reducing the basis dimension. In this first chapter, only the conservation of z-component of the total spin ($\hat{=}$ total magnetization) $m_z=\sum_{i=0}^{N-1} S_i^z$ is used:\\
-It is easy to verify, using the usual commutation relations for the spin operators [citation needed] that
+Exact diagonalization allows for total knowledge of the properties of a finite system by choosing a basis, setting up a Hamiltonian and diagonalizing it numerically. While theoretically applicable to any system size, this method is limited to around 30 spins, as the computational cost for diagonalization is $\mathcal{O}(d^3)$ and the spin basis dimension $d$ above grows like $2^N$ without utilizing symmetries.
+Symmetries can be used to transform the Hamiltonian matrix into block-diagonal form cf. \cite[p.\;56]{sand11} with each block belonging to states with a conserved quantum number, thereby reducing the basis dimension. In this first chapter, only the conservation of z-component of the total spin ($\hat{=}$ total magnetization) $m_z=\sum_{i=0}^{N-1} S_i^z$ is used:\\
+It is easy to verify, using the usual commutation relations for the spin operators that
 \begin{align}
     [S_i^z,H]&=\frac{1}{2}(A_1+A_2),\\
     A_n&=S_i^+ S_{i+n}^- -S_i^- S_{i+n}^+ -S_{i-n}^+ S_i^- +S_{i-n}^- S_i^+.
@@ -348,7 +348,8 @@ More precisely, A lattice state $\ket{S_0^z,S_1^z,\dots,S_{N-1}}$ is represented
 
 \subsection{Construction of the fixed magnetization basis}
 A basis list of states having the same magnetization $m_z$ is found by iterating over all integers $s$ from the $2^n$ dimensional basis and counting the amount of ``1'' bits $n_\uparrow$, checking whether they amount to the target magnetization $m_z$=$n_\uparrow-N/2$.\\
-With $s[i]$ labeling the $i$'th bit, starting from 0, the following pseudocode is used to obtain an ordered list of basis states $s_a$:
+With $s[i]$ labeling the $i$'th bit, starting from 0, the following pseudocode is used to obtain an ordered list of basis states $s_a$, cf. \cite[p.\;61]{sand11} :
+     
 
 \begin{algorithmic}
     \State $a=0$
@@ -367,10 +368,10 @@ $M$ is the basis dimension. Thus, in terms of $M$-tuples, a natural basis is giv
 each representing the corresponding integer state $s_a$.
 
 \subsection{Construction of the Hamilton matrix}
-The Hamiltonian (\ref{eq:XXZham}) is translated into a matrix for the fixed magnetization basis cf. \cite[60f.]{sand11}.
+The Hamiltonian (\ref{eq:XXZham}) is translated into a matrix for the fixed magnetization basis cf. \cite[p.\;60f.]{sand11}.
 The diagonal terms are $\braket{a|S_i^z S_{i+n}^z|a}=\pm1/4~\mu$ ,since the $i$'th and $i+n$'th spin are either equal or different.
 The off-diagonal terms $\left( S_i^+ S_{i+n}^- + S_i^- S_{i+n}^+ \right)$ flip the bits $i$ and $i+n$ $(0\leftrightarrow1)$ and amount to zero otherwise.
-A bisectional search [Pseudocode?] is used to find position $b$ of the flipped state $s^*$, giving a matrix element contribution of $\braket{b|( S_i^+ S_{i+n}^- + S_i^- S_{i+n}^+ )|a}=+1/2$.
+A bisectional search is used to find position $b$ of the flipped state $s^*$, giving a matrix element contribution of $\braket{b|( S_i^+ S_{i+n}^- + S_i^- S_{i+n}^+ )|a}=+1/2$.
 In pseudocode, the matrix belonging to the NNN Hamiltonian ($n=1,2$) is constructed as follows:
 \begin{algorithmic}
     \For{$a=1..M$}
@@ -452,7 +453,7 @@ We want to consider the expectation value of the $i$th spin $\braket{S_i^z}$ for
 \end{align}
 As the Heisenberg equation also holds for expectation values of operators, our expansion reads
 \begin{align}
-    \braket{S_i^z}_t=\braket{S_i^z}_0+i\braket{[H,S_i^z]}t-\frac{1}{2}\braket{\left[ H,[H,S_i^z] \right]}t^2+\mathcal{O}(t^3).
+    \braket{S_i^z}_t=\braket{S_i^z}_0+i\braket{[H,S_i^z]}_0 t-\frac{1}{2}\braket{\left[ H,[H,S_i^z] \right]}_0 t^2+\mathcal{O}(t^3).
     \label{eq:kurzexpansion}
 \end{align}
 From \cref{eq:comm} it is apparent that the linear term drops out, since all angular momentum eigenstates with different $S^z$ are orthogonal to each other. Following the same line of reasoning, and using $S^\pm S^\mp=\mathbf{S}^2-(S^z)^2\pm S^z$, one can show that 
@@ -468,7 +469,7 @@ Evaluating this expression for the state given in \cref{eq:totalantif} results i
     \label{eq:kurzzeit}
 \end{align}
 where the upper signs are to be used with a spin up as the initial $i$ state ($\ket{\dots\underbrace{\uparrow}_i\dots})$ and vice versa. 
-In \cref{fig:kurzzeit}, the time evolution of $\braket{S_1^z}$ computed with the program is plotted for variable system sizes $N=2,4,6,8,10,12,14$ with $\mu=0$, $\lambda=0$ in \cref{eq:XXZham}. The dashed blue line is the short-time approximation \cref{eq:kurzzeit}, which correctly describes the short-time behaviour of the system. Furthermore, it can be shown that for an infinite system size, the expectation value of the spin can be expressed using the zeroth Bessel function [citation needed!]:
+In \cref{fig:kurzzeit}, the time evolution of $\braket{S_1^z}$ computed with the program is plotted for variable system sizes $N=2,4,6,8,10,12,14$ with $\mu=0$, $\lambda=0$ in \cref{eq:XXZham}. The dashed blue line is the short-time approximation \cref{eq:kurzzeit}, which correctly describes the short-time behaviour of the system. Furthermore, it can be shown that for an infinite system size, the expectation value of the spin can be expressed using the zeroth Bessel function \cite[ch. II A]{barmettler}: 
 \begin{align}
     \braket{S_i^z}_t\big|_{N\rightarrow\infty}=\mp\frac{1}{2}J_0(2t),
     \label{eq:besselkurzzeit}
@@ -484,12 +485,12 @@ Overall, this is a clear indication that the time evolution computed by the prog
 \end{figure}
 
 \subsection{Single magnon propagation}
-The propagation of single or coupled spin flips in the form of ``magnons'' in a heisenberg chain is a current area of research. It is interesting to see, whether we can reproduce some of the qualitative findings of other publications. We begin by considering a single spin flip state in a length $N=31$ chain. The state is given by
+The propagation of single or coupled spin flips in the form of ``magnons'' in a Heisenberg chain is a current area of research. It is interesting to see, whether we can reproduce some of the qualitative findings of other publications. We begin by considering a single spin flip state in a length $N=31$ chain. The state is given by
 \begin{align}
     \ket a =    \ket{\uparrow\uparrow\dots\uparrow\uparrow\downarrow\uparrow\uparrow\dots\uparrow\uparrow}.
     \label{eq:singlestate}
 \end{align}
-In \cref{fig:testsingle,fig:testsingle2,fig:testsingle3,fig:testsingle4,fig:testsingle5,fig:testsingle6,fig:testsingle7,fig:testsingle8,fig:testsingle9,fig:testsingle10,}, a spacetime matrix plot of the expactation value $\braket{S_i^z}_t$ is  plotted for $\mu=0$ and different values of NNN coupling $\lambda$. As one can see in \cref{fig:testsingle}, for $\lambda =0$ the single excitation magnon spreads with a well defined velocity of $J$, which is in agreement to recent studies on the topic, see \cite[p.\,101]{ganahl}. As confirmed by these studies, the propagation is in no way depending on the choice of $\mu$. The spin flip in the middle performs a damped oscillation, giving birth to multiple propagation cascades \cite[p.\,99]{ganahl}. The higher the NNN coupling, the more chaotic the propagation becomes. A particularly interesting feature is seen in \cref{fig:testsingle4}: A stable region with a close to zero expectation value forms in the middle. At even higher $\lambda$ it also propagates away but stays more or less bound. Note the differences at the boundary in comparison to \cite[p.\,101]{ganahl}, where no periodic boundary conditions were used. Also note that the time axis on the left has been properly scaled to make the different plots comparable. The higher $\lambda$, the faster the propagation occurs, which makes sense in the picture that the spin flips get ``pulled'' by more neighbors. The white peaks are a characteristic of finite systems and arise from magnons traveling in both directions hitting each other and interfering constructively. As this state is similar to the initial state, it corresponds to an echo peak in the Loschmidt echo. As the propagation velocity is $J$ (1 in our case), this peak occurs approximately at $t=J N$.
+In \cref{fig:testsingle,fig:testsingle2,fig:testsingle3,fig:testsingle4,fig:testsingle5,fig:testsingle6,fig:testsingle7,fig:testsingle8,fig:testsingle9,fig:testsingle10,}, a spacetime matrix plot of the expactation value $\braket{S_i^z}_t$ is  plotted for $\mu=0$ and different values of NNN coupling $\lambda$. As one can see in \cref{fig:testsingle}, for $\lambda =0$ the single excitation magnon spreads with a well defined velocity of $J$, which is in agreement to recent studies on the topic, see \cite[p.\,101]{ganahl}. As confirmed by these studies, the propagation is in no way dependant on the choice of $\mu$. The spin flip in the middle performs a damped oscillation, giving birth to multiple propagation cascades \cite[p.\,99]{ganahl}. The higher the NNN coupling, the more chaotic the propagation becomes. A particularly interesting feature is seen in \cref{fig:testsingle4}: A stable region with a close to zero expectation value forms in the middle. At even higher $\lambda$ it also propagates away but stays more or less bound. Note the differences at the boundary in comparison to \cite[p.\,101]{ganahl}, where no periodic boundary conditions were used. Also note that the time axis on the left has been properly scaled to make the different plots comparable. The higher $\lambda$, the faster the propagation occurs, which makes sense in the picture that the spin flips get ``pulled'' by more neighbors. The white peaks are a characteristic of finite systems and arise from magnons traveling in both directions hitting each other and interfering constructively. As this state is similar to the initial state, it corresponds to an echo peak in the Loschmidt echo. As the propagation velocity is $J$ (1 in our case), this peak occurs approximately at $t=J N$.
 \begin{figure}[]
     \begin{subfigure}{.5\textwidth}
         \centering
@@ -701,6 +702,8 @@ Text\dots
 Text\dots
 
 \end{comment}
+\section{Conclusion}
+We were able to succesfully implement the Heisenberg XXZ chain in the fixed magnetization basis using a bit representation for the natural states. The system was solved using an exact diagonalization method. The time evolution of the system was tested and verified quantitatively by means of a short-time Baker-Campbell-Hausdorff expansion. Furthermore, qualitative findings from recent publications on the behaviour of single- and two-string magnons have been succesfully reproduced. Additional observables, like the Loschmidt-echo were tested but are not part of this first report. This leaves us with a solid foundation for following studies. Going forward, the focus will be set on the investigetion of time-reversal symmetry-braking, potentially coming about from statistical fluctuations.
 %##############################################################################################
 
 \cleardoublepage
