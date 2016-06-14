@@ -12,6 +12,7 @@ Hamiltonian::Hamiltonian(int N,int m){
 }
 
 void Hamiltonian::set_ham(double mu,double lambda){
+    fill();
     _lambda=lambda;
     _mu=mu;
     int j=0; 

@@ -181,6 +181,45 @@ void plot_szsz_n(Hamiltonian* h,cx_vec state,int n,double dt, double T){
     myfile.close(); 
 }
 
+void plot_kurz_auto(Hamiltonian* h,cx_vec state,double dt, double T){
+    Gnuplot gp;
+    int N=h->get_system_size();
+    state=h->nat_2_eigen(state); //in eigenbasis transformieren
+    ofstream myfile;
+    myfile.open("kurzzeit.dat");
+    Measurement testMes(h);
+    Timeevolver testTime(h);
+    myfile << *h;
+    myfile <<"# T="<<T<<endl;
+    myfile <<"# dt="<<dt<<endl;
+    myfile << endl << "# t \t <S_z,1>"<<endl;
+    cout <<endl<<"<><><><><><><><><><><><><><><><>Zeitentwicklung<><><><><><><><><><><><><><><>"<<endl<<endl;
+    double t=0;
+    double res=0;
+    res = testMes.sz_i(state,1);
+    myfile << t << "\t" << res << endl; 
+    while (t<T){
+        testTime.time_fw(&state,dt);
+        t=t+dt;
+        res = testMes.sz_i(state,1);
+        myfile << t << "\t" << res << endl;
+    }
+     
+    gp <<"reset"<<endl;
+    gp <<"set term eps"<<endl;
+    gp <<"set output \"kurzzeit.eps\""<<endl;
+    gp <<"set samples 2000"<<endl;
+    gp <<"set linetype 10"<<endl;
+    gp <<"set xrange [0:"<<T<<"]"<<endl;
+    gp <<"set yrange [-1:1]"<<endl;
+    gp <<"f(x)=-0.5+0.5*x**2"<<endl;
+    
+    gp <<"p \"kurzzeit.dat\" u 1:2  with lines lc rgb \"red\",f(x),-0.5*besj0(2*x)"<<endl;
+    gp <<"set output"<<endl;
+ 
+  
+    myfile.close();
+}
 void plot_kurz(Hamiltonian* h,cx_vec state,double dt, double T){
     //Gnuplot gp;
     int N=h->get_system_size();
@@ -209,7 +248,7 @@ void plot_kurz(Hamiltonian* h,cx_vec state,double dt, double T){
         res = testMes.sz_i(state,1);
         myfile << t << "\t" << res << endl;
     }
-    /*
+    /* 
     gp <<"reset"<<endl;
     gp <<"set term eps"<<endl;
     gp <<"set output \"kurzzeit.eps\""<<endl;
@@ -222,6 +261,7 @@ void plot_kurz(Hamiltonian* h,cx_vec state,double dt, double T){
     gp <<"p \"kurzzeit.dat\" u 1:2  with lines lc rgb \"red\",f(x),-0.5*besj0(2*x)"<<endl;
     gp <<"set output"<<endl;
     */
+   
     myfile.close();
 }
    
@@ -321,7 +361,7 @@ int main()
     plot_groundstate_quench(&h1,&h2,0.01,30);
      
    
-    /* 
+     
     //state eingeben :
     char test[testHam.get_system_size()];
     cout << "insert initial state:"<<endl;
@@ -331,10 +371,10 @@ int main()
     cout <<"vector is: "<<endl;
     cout << state <<endl;
 
-    testHam.set_ham(-2,0.2);
+    testHam.set_ham(0,0);
     testHam.diagonalize();
     plot_lohschmidt_echo(&testHam,state,0.01,50);
-    */ 
+     
 
     /* 
     double T=40; //60
@@ -378,15 +418,15 @@ int main()
     }
     */
 
-    /*(kurzzeit)
+    //(kurzzeit)
     testHam.set_ham(0,0);
     cout <<endl<<"<><><><><><><><><><><><><><><><>diagonalisierung<><><><><><><><><><><><><><><>"<<endl<<endl;
     testHam.diagonalize();
-    plot_kurz(&testHam,state,0.01,10);
+    plot_kurz_auto(&testHam,state,0.01,10);
     //plot_lohschmidt_echo(&testHam,state,0.01,10);  //(ham,dt,T)
     
     //plot_szsz_n(&testHam,state,1,0.1,10); //(ham,n,dt,T)
-    */
+    
 
     /*
   int i=0;
