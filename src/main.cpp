@@ -40,7 +40,6 @@ cx_vec ground_state(Hamiltonian* h){ //returns ground state of the Hamiltonian i
     vec v = vec(zeros(dim));
     v(0)=1;
     cx_vec cv= cx_vec(v,zeros(dim));
-    cout << cv <<endl;
     cv=h->eigen_2_nat(cv);
     return cv;
 }
@@ -231,7 +230,6 @@ void plot_groundstate_quench(Hamiltonian* h1, Hamiltonian *h2,double dt, double 
     int N=h1->get_system_size();
     cx_vec state=ground_state(h1);
     state=h2->nat_2_eigen(state);
-    cout <<state<<endl;
     cx_vec state_0=state;
    
     ofstream myfile;
@@ -312,18 +310,18 @@ int main()
     testHam.print_basis_dimension();
     cout <<"\n";
 
-    
+     
     //GROUND STATE:
     Hamiltonian h1(N,m);
-    h1.set_ham(-0.8,0); //mu=1.1
+    h1.set_ham(1,0); //mu=1.1
     h1.diagonalize();
     Hamiltonian h2(N,m);
-    h2.set_ham(-2,0);
+    h2.set_ham(4,0);
     h2.diagonalize();
     plot_groundstate_quench(&h1,&h2,0.01,30);
-    
+     
    
-    /*
+    /* 
     //state eingeben :
     char test[testHam.get_system_size()];
     cout << "insert initial state:"<<endl;
@@ -336,7 +334,7 @@ int main()
     testHam.set_ham(-2,0.2);
     testHam.diagonalize();
     plot_lohschmidt_echo(&testHam,state,0.01,50);
-    */
+    */ 
 
     /* 
     double T=40; //60
